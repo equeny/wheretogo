@@ -1,3 +1,6 @@
+# coding: utf-8
+
+import datetime
 import logging
 import urllib
 import urllib2
@@ -16,45 +19,63 @@ logger = logging.getLogger("wheretogo.%s" % __name__)
 # TODO: move to settings.py
 VALID_PLACE_CATEGORIES = [
     #'Airport',
-    'Arts/Entertainment/Nightlife',
-    'Attractions/Things to Do',
-    'Automotive',
-    'Bank/Financial Services',
-    'Bar',
-    'Book Store',
-    'Business Services',
-    'Church/Religious Organization',
-    'Club',
-    'Community/Government',
-    'Concert Venue',
-    'Education',
-    'Event Planning/Event Services',
-    'Food/Grocery',
-    'Health/Medical/Pharmacy',
-    'Home Improvement',
-    'Hospital/Clinic',
-    'Hotel',
-    'Landmark',
-    'Library',
-    #'Local Business',
-    'Movie Theater',
-    'Museum/Art Gallery',
-    'Outdoor Gear/Sporting Goods',
-    'Pet Services',
-    'Professional Services',
-    'Public Places',
-    'Real Estate',
-    'Restaurant/Cafe',
-    'School',
-    'Shopping/Retail',
-    'Spas/Beauty/Personal Care',
-    'Sports Venue',
-    'Sports/Recreation/Activities',
-    'Tours/Sightseeing',
-    'Transit Stop',
-    'Transportation',
-    #'University',
+    'arts/entertainment/nightlife',
+    'attractions/things to do',
+    #'automotive',
+    #'bank/financial services',
+    'bar',
+    #'book store',
+    #'business services',
+    'church/religious organization',
+    'club',
+    #'community/government',
+    'concert venue',
+    #'education',
+    #'event planning/event services',
+    'food/grocery',
+    #'health/medical/pharmacy',
+    #'home improvement',
+    #'hospital/clinic',
+    #'hotel',
+    'landmark',
+    'library',
+    #'local business',
+    'movie theater',
+    'museum/art gallery',
+    'outdoor gear/sporting goods',
+    #'pet services',
+    #'professional services',
+    'public places',
+    #'real estate',
+    'restaurant/cafe',
+    #'school',
+    'shopping/retail',
+    'spas/beauty/personal care',
+    'sports venue',
+    'sports/recreation/activities',
+    'tours/sightseeing',
+    #'transit stop',
+    #'transportation',
+    #'university',
 ]
+
+
+def normalize_place_category(cat_name, name):
+    '''Many places have Local Business category, so we try to get more detailed category'''
+
+    cat_name = cat_name.lower()
+    words = name.lower().strip().split(' ')
+    if cat_name == 'local business':
+        if 'cafe' in words or 'restaurant' in words or 'café' in words \
+        or 'sushi' in words or 'pizza' in words:
+            return 'restaurant/cafe'
+        elif 'cinema' in words:
+            return 'movie theater'
+        elif 'club' in words:
+            return 'club'
+        elif 'pub' in words or 'bar' in words:
+            return 'bar'
+    return cat_name
 
 
 class PlaceManager(models.Manager):
@@ -76,33 +97,50 @@ class PlaceManager(models.Manager):
             'center': "%f,%f" % (lat, lon),
             'distance': "%.0f" % radius,
             'access_token': oauth_token,
-            'limit': 1000
+            'limit': 2000
         })
+        logger.debug('Trying to places list from Facebook with url: %s' % path)
         response = urllib2.urlopen(path)
         data = json.loads(response.read())
         # TODO retrieve info from next pages if numbers less than 500
+        results = []
         for place in data['data']:
-            logger.debug('Adding place "%s" to db' % place['name'])
-            if place['category'] not in VALID_PLACE_CATEGORIES:
+            logger.debug('Trying to add place "%s" to db' % place['name'])
+            place_category = normalize_place_category(place['category'], place['name'])
+            if place_category not in VALID_PLACE_CATEGORIES:
+                logger.debug(
+                    'Place category is not valid(%s). Ignoring' % place_category
+                )
                 continue
 
-            Place.objects.get_or_create(
-                name=place['name'],
-                fid=place['id'],
-                category=place['category'],
-                lat=place['location']['latitude'],
-                lon=place['location']['longitude']
-            )
+            try:
+                place_obj = Place.objects.get(
+                    fid=place['id'],
+                )
+            except Place.DoesNotExist:
+                place_obj = Place(fid=place['id'])
+            place_obj.name = place['name']
+            place_obj.fid = place['id']
+            place_obj.category = place_category
+            place_obj.lat = place['location']['latitude']
+            place_obj.lon = place['location']['longitude']
+            place_obj.save()
+            results.append(place_obj)
+        return results
 
 
 class Place(models.Model):
-    name = models.CharField(_('Name'), max_length=50)
+    name = models.CharField(_('Name'), max_length=150)
     fid = models.CharField(_('Facebook id'), max_length=50, unique=True)
     lat = models.FloatField(_('Latitude'))
     lon = models.FloatField(_('Latitude'))
     category = models.CharField(_('Category'), max_length=50)
+    likes_count = models.PositiveIntegerField(default=0)
 
     objects = PlaceManager()
+
+    def __unicode__(self):
+        return self.name
 
 
 class Planning(models.Model):
@@ -115,21 +153,71 @@ class Planning(models.Model):
     # 50, 30 - should be Kiev coordinates
     radius = models.FloatField(_('Radius'), default=10000)
 
-    def find_where_to_go(self, oauth_token):
+    def find_where_to_go(self):
+
         # getting places in current radius
-        Place.grab_places(self.lat, self.log, self.radius, oauth_token)
+        places = Place.objects.grab_places(
+            self.lat, self.lon, self.radius, self.organizer.oauth_token
+        )
+        # for faster check if user has checked in in current place
+        place_ids = set([p.id for p in places])
 
         # getting facebook profiles checkins
-        for profile in [self.organizer] + self.profiles.all():
-            path = 'https://graph.facebook.com/%s/checkins' % profile.fid
+        for profile in self.profiles.all():
+            path = 'https://graph.facebook.com/%s/checkins?access_token=%s' % (
+                profile.fid, self.organizer.oauth_token
+            )
             response = urllib2.urlopen(path)
             data = json.loads(response.read())
-            import ipdb
-            ipdb.set_trace()
 
+            profile_categories = {}
+            for checkin in data.get('data', []):
+                logger.debug(
+                    'Parsing check-in for place "%s"' % checkin['place']['name']
+                )
+                place_id = checkin['place']['id']
+                path = 'https://graph.facebook.com/%s' % place_id
+                response = urllib2.urlopen(path)
+                data = json.loads(response.read())
+                if not data:
+                    logger.debug('Empty results for page %s' % place_id)
+                    continue
+                place_category = normalize_place_category(
+                    data['category'],
+                    data['name']
+                )
+                if place_category in VALID_PLACE_CATEGORIES:
+                    profile_categories.setdefault(place_category, 0)
+                    profile_categories[place_category] += 1
+            profile.categories_data = json.dumps(profile_categories)
+            profile.save()
+            profile.categories = profile_categories
+            profile.categories_count = sum(profile_categories.values())
+            logger.debug('Categories for user %s: %s' % (profile.fid, profile_categories))
+
+        # going throw places in current radius and determining how good it's to
+        # to each user
+
+        import ipdb
+        ipdb.set_trace()
+
+        for place in places:
+            for profile in self.profiles.all():
+                place_result, c = PlanningResultPlace.objects.get_or_create(
+                    planning=self,
+                    place=place
+                )
+                place_result.category_rank = profile.categories.get(place.category, 0) / \
+                    profile.categories_count if profile.categories_count \
+                    else 0
+                place_result.save()
 
 
 class PlanningResultPlace(models.Model):
     planning = models.ForeignKey(Planning)
     place = models.ForeignKey(Place)
-    rank = models.FloatField(default=0)
+    category_rank = models.FloatField(default=0)
+    likes_count = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        unique_together = ('planning', 'place')

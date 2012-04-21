@@ -146,7 +146,10 @@ LOGIN_URL = '/'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_ERROR_URL = '/'
 
-FACEBOOK_EXTENDED_PERMISSIONS = ['email', 'user_checkins', 'friends_checkins']
+FACEBOOK_EXTENDED_PERMISSIONS = [
+    'email', 'user_checkins', 'friends_checkins',
+    'offline_access'
+]
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

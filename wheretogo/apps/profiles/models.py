@@ -19,13 +19,18 @@ class FacebookProfile(models.Model):
 
     fid = models.CharField(_('Facebook id'), max_length=50)
     oauth_token = models.TextField(_('oauth_token'), null=True, blank=True)
+    categories_data = models.TextField(blank=True, null=True)
+    categories_count = models.PositiveIntegerField(default=0)
+    last_change = models.DateField(
+        _('Last change date'), blank=True, null=True
+    )
 
     def __unicode__(self):
         return u'Facebook user for %s' % self.user
 
 
 def new_users_handler(sender, user, response, details, **kwargs):
-    import ipdb
-    ipdb.set_trace()
-    FacebookProfile.objects.create(user=user, fid=response['id'])
+    profile, c = FacebookProfile.objects.get_or_create(user=user, fid=response['id'])
+    profile.oauth_token = response['access_token']
+    profile.save()
     return False
