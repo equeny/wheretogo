@@ -10,3 +10,11 @@ class FacebookProfile(models.Model):
     )
 
     fid = models.CharField(_('Facebook id'), max_length=50)
+
+    def __unicode__(self):
+        return u'Facebook user for %s' % self.user
+
+
+def new_users_handler(sender, user, response, details, **kwargs):
+    FacebookProfile.objects.create(user=user, fid=response['id'])
+    return False
