@@ -125,11 +125,26 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
 
+    # apps
+    'social_auth',
+
     # project
     'core',
     'planning',
     'profiles'
 )
+
+AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.facebook.FacebookBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+FACEBOOK_APP_ID = '107790869310294'
+FACEBOOK_API_SECRET = 'b9bef1509c775d7a7b788e15badfe5cf'
+LOGIN_URL = '/'
+LOGIN_REDIRECT_URL = '/'
+LOGIN_ERROR_URL = '/'
+
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -164,6 +179,9 @@ try:
     LOCAL_SETTINGS
 except NameError:
     try:
+        DEBUG_APPS = DEBUG_MIDDLEWARE_CLASSES = tuple()
         from local_settings import *
+        INSTALLED_APPS += DEBUG_APPS
+        MIDDLEWARE_CLASSES += DEBUG_MIDDLEWARE_CLASSES
     except ImportError:
         pass
