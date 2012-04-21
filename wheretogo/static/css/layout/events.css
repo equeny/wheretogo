@@ -23,14 +23,14 @@
 	width: 3px;
 	height: 30px;
 	margin: auto 5px;
-	background: url("/img/events/i.png") no-repeat;
+	background: url("/static/img/events/i.png") no-repeat;
 }
 
 .events .add-btn .add-icon {
 	width: 26px;
 	height: 26px;
 	margin-top: 2px;
-	background: url("/img/events/add.png") no-repeat;
+	background: url("/static/img/events/add.png") no-repeat;
 }
 
 .events .up-btn .up-icon {
