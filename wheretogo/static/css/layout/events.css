@@ -2,11 +2,39 @@
 	margin: 40px 0;
 }
 
-.events .controls {
+.events .events-controls {
 	display: block;
 	float: none;
 	clear: both;
 	height: 50px;
+	top: 0px;
+	padding-top: 20px;
+	z-index: 100;
+	background: url("/img/b.jpg") repeat left top;
+	padding-bottom: 20px;
+	width: 960px;
+	z-index: 100;
+}
+
+.events .events-controls.scroll {
+	position: fixed;
+}
+
+.up-btn {
+	display: none;
+}
+
+.event-container.scroll {
+	padding-top: 110px;
+}
+
+.clearfix-bg {
+	padding-top: 25px;
+	width: 100%;
+	height: 3px;
+	clear: both;
+	float: none;
+	background: url("/img/events/clearfix.png") no-repeat bottom left;
 }
 
 .events .control-btn * {
@@ -23,14 +51,14 @@
 	width: 3px;
 	height: 30px;
 	margin: auto 5px;
-	background: url("/static/img/events/i.png") no-repeat;
+	background: url("/img/events/i.png") no-repeat;
 }
 
 .events .add-btn .add-icon {
 	width: 26px;
 	height: 26px;
 	margin-top: 2px;
-	background: url("/static/img/events/add.png") no-repeat;
+	background: url("/img/events/add.png") no-repeat;
 }
 
 .events .up-btn .up-icon {
@@ -38,6 +66,18 @@
 	height: 26px;
 	margin-top: 2px;
 	background: url("/img/events/up.png") no-repeat;
+}
+
+.events .view-btn .view-icon {
+	width: 26px;
+	height: 26px;
+	margin-top: 2px;
+	background: url("/img/events/view.png") no-repeat;
+}
+
+.events .view-btn {
+	margin-top: 3px;
+	margin-left: 14px;
 }
 
 .events .control-btn .btn-text {
@@ -54,27 +94,200 @@
 	float: left;
 }
 
-.clearfix-bg {
-	margin-top: 20px; width : 100%;
+.event-footer {
+	margin-bottom: 20px;
+	width: 100%;
 	height: 3px;
 	clear: both;
 	float: none;
-	background: url("/img/events/clearfix.png") no-repeat;
-	width: 100%;
+	background: url("/img/events/clearfixinv.png") no-repeat;
 }
 
 .event-container {
 	margin-top: 40px;
-	height: 500px;
-	background: url("/img/events/timeline-bg.png") repeat-y 100px;
+	padding-bottom: 40px;
+	background: url("/img/events/timeline-bg.png") repeat-y 110px;
 }
 
 .datelabel {
-	margin-left: 60px;
+	margin-left: 73px;
 	position: relative;
 	top: -1px;
+	margin-bottom: 10px;
 }
 
-.event-timeline {
+.event-date {
+	width: 200px;
+	float: left;
+}
+
+.event-info {
+	float: left;
+	width: 750px;
+}
+
+.event-item {
+	margin-bottom: 30px;
+	display: table;
+}
+
+.event-info .thumbnail,.date-popup .thumbnail,.time-period .thumbnail {
+	background: #fff;
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	border: 0;
+	display: table;;
+}
+
+.event-item {
+	opacity: 0.8;
+	-webkit-transition: opacity 0.2s ease;
+	-moz-transition: opacity 0.2s ease;
+	-o-transition: opacity 0.2s ease;
+	transition: opacity 0.2s ease;
+}
+
+.event-item:hover {
+	-webkit-transition: opacity 0.2s ease;
+	-moz-transition: opacity 0.2s ease;
+	-o-transition: opacity 0.2s ease;
+	transition: opacity 0.2 s ease;
+	opacity: 1;
+}
+
+.event-date {
+	height: 100%;
+}
+
+.event-date-item {
+	float: left;
+	position: relative;
+	top: 50%;
+}
+
+.date-leftarr,.date-rightarr {
+	width: 0px;
+	height: 0px;
+}
+
+.date-leftarr {
+	width: 0;
+	height: 0;
+	border-top: 10px solid transparent;
+	border-left: 10px solid white;
+	border-bottom: 10px solid transparent;
+	margin-top: -9px;
+	margin-right: 1px;
+}
+
+.date-rightarr {
+	width: 0;
+	height: 0;
+	border-top: 10px solid transparent;
+	border-right: 10px solid white;
+	border-bottom: 10px solid transparent;
+	margin-top: -9px;
+	margin-left: 1px;
+}
+
+.time-period,.date-popup {
 	
+}
+
+.date-popup {
+	width: 85px;
+	margin-top: -28px;
+	height: 50px;
+}
+
+.time-period {
+	width: 45px;
+	margin-top: -18px;
+	height: 30px;
+}
+
+.date-point {
+	background: #fff;
+	width: 12px;
+	height: 12px;
+	border-radius: 100%;
+	margin-top: -5px;
+}
+
+.map-image {
+	float: left;
+}
+
+.map-image img {
+	width: 100px;
+	height: 100px;
+	padding: 10px
+}
+
+.event-description {
+	padding: 10px;
+	width: 200px;
+	float: left;
+}
+
+.event-description p {
+	text-shadow: 1px 1px 1px #EEE;
+}
+
+.event-friends {
+	height: 100%;
+	float: left;
+}
+
+.event-friends .thumbnails {
+	position: relative;
+	top: 30px;;
+	display: block;
+	margin-top: -20px;
+	margin-left: 10px;
+}
+
+.event-friends .thumbnails>li {
+	margin: 0;
+	margin-right: 5px;
+}
+
+.event-friends img {
+	width: 50px;
+	height: 50px;
+}
+
+.event-controls {
+	opacity: 0;
+	height: 50px;
+	padding-right: 15px;
+	background: #EDEFF4;
+	position: relative;
+	right: 0px;
+	float: right;
+	top: 38px;
+	box-shadow: inset 1px 1px 4px #ddd;
+	border-radius: 6px 0 0 6px;
+	-webkit-transition: opacity 0.5s ease;
+	-moz-transition: opacity 0.5s ease;
+	-o-transition: opacity 0.5s ease;
+	transition: opacity 0.5s ease;
+}
+
+.event-controls .btn i {
+	margin-right: 5px;
+}
+
+.event-controls .btn {
+	margin-left: 15px;
+	margin-top: 10px;
+}
+
+.event-item:hover .event-controls {
+	opacity: 1;
+	-webkit-transition: opacity 0.5s ease;
+	-moz-transition: opacity 0.5s ease;
+	-o-transition: opacity 0.5s ease;
+	transition: opacity 0.5s ease;
 }

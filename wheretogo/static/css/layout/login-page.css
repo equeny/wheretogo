@@ -3,10 +3,10 @@
 	margin: 40px auto;
 }
 
-.content p{
+.login p{
 	color: #333;
 	font-size:18px;
-	text-shadow: 1px 1px 1px #fff;
+	text-shadow: 1px 1px 1px #eee;
 }
 
 .sign-in {
@@ -16,7 +16,7 @@
 }
 
 .sign-in a {
-	background: url("/static/img/login-page/fb-bg.png") no-repeat scroll 0 0
+	background: url("/img/login-page/fb-bg.png") no-repeat scroll 0 0
 		transparent;
 	clear: both;
 	color: white;
@@ -30,7 +30,7 @@
 }
 
 .sign-in a span {
-	background: url("/static/img/login-page/fb-bg.png") no-repeat scroll right
+	background: url("/img/login-page/fb-bg.png") no-repeat scroll right
 		-54px transparent;
 	color: white;
 	display: block;
