@@ -147,8 +147,8 @@ LOGIN_REDIRECT_URL = '/'
 LOGIN_ERROR_URL = '/'
 
 FACEBOOK_EXTENDED_PERMISSIONS = [
-    'email', 'user_checkins', 'friends_checkins',
-    'offline_access'
+    'email', 'user_checkins', 'user_status', 'friends_status',
+    'friends_checkins', 'offline_access', 'user'
 ]
 
 # A sample logging configuration. The only tangible logging

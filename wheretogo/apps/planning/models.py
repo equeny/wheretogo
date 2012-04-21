@@ -1,6 +1,7 @@
 # coding: utf-8
 
-import datetime
+from datetime import datetime, timedelta
+import time
 import logging
 import urllib
 import urllib2
@@ -99,7 +100,7 @@ class PlaceManager(models.Manager):
             'access_token': oauth_token,
             'limit': 2000
         })
-        logger.debug('Trying to places list from Facebook with url: %s' % path)
+        logger.debug('Trying to get places list from Facebook with url: %s' % path)
         response = urllib2.urlopen(path)
         data = json.loads(response.read())
         # TODO retrieve info from next pages if numbers less than 500
@@ -163,15 +164,26 @@ class Planning(models.Model):
         place_ids = set([p.id for p in places])
 
         # getting facebook profiles checkins
-        for profile in self.profiles.all():
-            path = 'https://graph.facebook.com/%s/checkins?access_token=%s' % (
-                profile.fid, self.organizer.oauth_token
-            )
+        profiles = self.profiles.all()
+        for profile in profiles:
+            if profile.last_changes:
+                path = 'https://graph.facebook.com/%s/locations?access_token=%s&since=%s' % (
+                    profile.fid, self.organizer.oauth_token,
+                    int(time.mktime((profile.last_changes).timetuple()))
+                )
+            else:
+                path = 'https://graph.facebook.com/%s/locations?access_token=%s' % (
+                    profile.fid, self.organizer.oauth_token
+                )
             response = urllib2.urlopen(path)
             data = json.loads(response.read())
 
-            profile_categories = {}
+            profile_categories = json.loads(profile.categories_data) \
+                if profile.categories_data else {}
             for checkin in data.get('data', []):
+                if 'place' not in checkin:
+                    # skip check-ins without place
+                    continue
                 logger.debug(
                     'Parsing check-in for place "%s"' % checkin['place']['name']
                 )
@@ -183,31 +195,29 @@ class Planning(models.Model):
                     logger.debug('Empty results for page %s' % place_id)
                     continue
                 place_category = normalize_place_category(
-                    data['category'],
+                    data.get('category', ''),
                     data['name']
                 )
                 if place_category in VALID_PLACE_CATEGORIES:
                     profile_categories.setdefault(place_category, 0)
                     profile_categories[place_category] += 1
             profile.categories_data = json.dumps(profile_categories)
-            profile.save()
             profile.categories = profile_categories
             profile.categories_count = sum(profile_categories.values())
+            profile.save()
             logger.debug('Categories for user %s: %s' % (profile.fid, profile_categories))
 
         # going throw places in current radius and determining how good it's to
         # to each user
 
-        import ipdb
-        ipdb.set_trace()
-
         for place in places:
-            for profile in self.profiles.all():
+            for profile in profiles:
                 place_result, c = PlanningResultPlace.objects.get_or_create(
                     planning=self,
                     place=place
                 )
-                place_result.category_rank = profile.categories.get(place.category, 0) / \
+                place_result.category_rank += \
+                    float(profile.categories.get(place.category, 0)) / \
                     profile.categories_count if profile.categories_count \
                     else 0
                 place_result.save()
@@ -221,3 +231,4 @@ class PlanningResultPlace(models.Model):
 
     class Meta:
         unique_together = ('planning', 'place')
+        ordering = ('-category_rank',)

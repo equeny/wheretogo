@@ -20,8 +20,8 @@ class FacebookProfile(models.Model):
     oauth_token = models.TextField(_('oauth_token'), null=True, blank=True)
     categories_data = models.TextField(blank=True, null=True)
     categories_count = models.PositiveIntegerField(default=0)
-    last_change = models.DateField(
-        _('Last change date'), blank=True, null=True
+    last_changes = models.DateTimeField(
+        _('Last changes date'), blank=True, null=True, auto_now=True
     )
     last_friends_update = models.DateField(auto_now_add=True)
 
