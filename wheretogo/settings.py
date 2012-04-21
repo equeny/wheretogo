@@ -127,6 +127,8 @@ INSTALLED_APPS = (
 
     # project
     'core',
+    'planning',
+    'profiles'
 )
 
 # A sample logging configuration. The only tangible logging
