@@ -13,4 +13,4 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         lat, lon, radius, token = args[0], args[1], args[2], args[3]
 
-        Place.grab_places(float(lat), float(lon), float(radius), token)
+        Place.objects.grab_places(float(lat), float(lon), float(radius), token)

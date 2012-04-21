@@ -22,7 +22,7 @@ MANAGERS = ADMINS
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Kiev'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -127,6 +127,7 @@ INSTALLED_APPS = (
 
     # apps
     'social_auth',
+    'south',
 
     # project
     'core',
@@ -145,6 +146,7 @@ LOGIN_URL = '/'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_ERROR_URL = '/'
 
+FACEBOOK_EXTENDED_PERMISSIONS = ['email', 'user_checkins', 'friends_checkins']
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
