@@ -290,7 +290,7 @@ class Planning(models.Model):
 
 
 class PlanningResultPlace(models.Model):
-    planning = models.ForeignKey(Planning)
+    planning = models.ForeignKey(Planning, related_name='results')
     place = models.ForeignKey(Place)
     category_rank = models.FloatField(default=0)
     likes_rank = models.FloatField(default=0)

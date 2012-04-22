@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% load planning_tags %}
+
+{% block extra_css %}
+  @import url("{{ STATIC_URL }}/css/layout/events.css");
+{% endblock %}
+
+{% block content %}
+<div id="content" class="events">
+  <div class="wrapper">
+    <div class="events-controls switch">
+      <a href="#" class="btn btn-primary btn-large control-btn add-btn"><span class="add-icon"></span><i></i><span class="btn-text">Organize event</span></a>
+      <a  class="btn btn-primary btn-large control-btn up-btn btn-success"><span class="up-icon"></span><i></i><span class="btn-text">Scroll to top event</span></a>
+      <div class="clearfix-bg"></div>
+    </div>
+
+    <div class="event-container switch">
+      <div class="datelabel">
+        <span class="badge badge-info">Event date</span>
+      </div>
+      {% for result in planning.results.all %}
+        <div class="event-item">
+          <div class="event-date">
+            <div class="event-date-item date-popup thumbnail">
+              <div class="thumbnail"></div>
+            </div>
+            <div class="event-date-item date-leftarr"></div>
+            <div class="event-date-item date-point"></div>
+            <div class="event-date-item date-rightarr"></div>
+            <div class="event-date-item time-period thumbnail">
+              <div class="thumbnail"></div>
+            </div>
+          </div>
+          <div class="event-info thumbnail">
+            <div class="thumbnail">
+              <div class="map-image">
+                <img src="http://graph.facebook.com/{{ result.place.fid }}/picture?type=square" />
+              </div>
+              <div class="event-description">
+                <p>{{ result.place }}</p>
+              </div>
+              <div class="event-friends">
+                <ul class="thumbnails">
+                  {% for friend in planning.profiles.all|random_results:"4" %}
+                  <li >
+                    <a href="http://facebook.com/{{ friend.fid }}" class="thumbnail">
+                      <img src="{{ friend.picture }}" alt="{{ friend.name }}">
+                    </a>
+                  </li>
+                  {% endfor %}
+                  <li>
+                  <a href="http://facebook.com/{{ result.place.fid }}" class="btn btn-info control-btn view-btn"><span class="view-icon"></span><i></i><span class="btn-text">View Place</span></a>
+                  </li>
+                </ul>
+              </div>
+              <div class="event-controls">
+                <a class="btn btn-primary"><i class="icon-comment icon-white"></i>Add comment</a>
+                <a class="btn btn-warning"><i class="icon-edit icon-white"></i>Edit event</a>
+                <a class="btn btn-danger"><i class="icon-remove icon-white"></i>Delete event</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="event-footer"></div>
+  </div>
+</div>
+
+{% endblock content %}

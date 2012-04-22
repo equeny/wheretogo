@@ -102,3 +102,9 @@ def planning_status(request, id):
         pass
         # redirect to results
     return render(request, 'planning/planning_status.html', {'planning': planning})
+
+
+@login_required
+def planning_results(request, id):
+    planning = get_object_or_404(Planning, id=id)
+    return render(request, 'planning/planning_results.html', {'planning': planning})

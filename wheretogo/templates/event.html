@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block extra_css %}
-  @import url("/static/css/layout/events.css");
+  @import url("{{ STATIC_URL }}/css/layout/events.css");
 {% endblock %}
 
 {% block content %}
@@ -42,7 +42,119 @@
               <ul class="thumbnails">
                 <li >
                   <a href="#" class="thumbnail">
-                    <img src="/static/img/b.jpg" alt="">
+                    <img src="{{ STATIC_URL }}/img/b.jpg" alt="">
+                  </a>
+                </li>
+                <li >
+                  <a href="#" class="thumbnail">
+                    <img src="{{ STATIC_URL }}/img/b.jpg" alt="">
+                  </a>
+                </li>
+                <li >
+                  <a href="#" class="thumbnail">
+                    <img src="{{ STATIC_URL }}/img/b.jpg" alt="">
+                  </a>
+                </li>
+                <li >
+                  <a href="#" class="thumbnail">
+                    <img src="{{ STATIC_URL }}/img/b.jpg" alt="">
+                  </a>
+                </li>
+                <li >
+                  <a href="#" class="btn btn-info control-btn view-btn"><span class="view-icon"></span><i></i><span class="btn-text">View Event</span></a>
+                </li>
+              </ul>
+            </div>
+            <div class="event-controls">
+              <a class="btn btn-primary"><i class="icon-comment icon-white"></i>Add comment</a>
+              <a class="btn btn-warning"><i class="icon-edit icon-white"></i>Edit event</a>
+              <a class="btn btn-danger"><i class="icon-remove icon-white"></i>Delete event</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="event-item">
+        <div class="event-date">
+          <div class="event-date-item date-popup thumbnail">
+            <div class="thumbnail"></div>
+          </div>
+          <div class="event-date-item date-leftarr"></div>
+          <div class="event-date-item date-point"></div>
+          <div class="event-date-item date-rightarr"></div>
+          <div class="event-date-item time-period thumbnail">
+            <div class="thumbnail"></div>
+          </div>
+        </div>
+        <div class="event-info thumbnail">
+          <div class="thumbnail">
+            <div class="map-image">
+              <img  />
+            </div>
+            <div class="event-description">
+              <p>Hey dear friends, Here is a video were you can see almost the entire progress of this realism drawing. The progress of the drawing is speed up. Finished draw..</p>
+            </div>
+
+            <div class="event-friends">
+              <ul class="thumbnails">
+                <li >
+                  <a href="#" class="thumbnail">
+                    <img src="{{ STATIC_URL }}/img/b.jpg" alt="">
+                  </a>
+                </li>
+                <li >
+                  <a href="#" class="thumbnail">
+                    <img src="{{ STATIC_URL }}/img/b.jpg" alt="">
+                  </a>
+                </li>
+                <li >
+                  <a href="#" class="thumbnail">
+                    <img src="{{ STATIC_URL }}/img/b.jpg" alt="">
+                  </a>
+                </li>
+                <li >
+                  <a href="#" class="thumbnail">
+                    <img src="{{ STATIC_URL }}/img/b.jpg" alt="">
+                  </a>
+                </li>
+                <li >
+                  <a href="#" class="btn btn-info control-btn view-btn"><span class="view-icon"></span><i></i><span class="btn-text">View Event</span></a>
+                </li>
+              </ul>
+            </div>
+            <div class="event-controls">
+              <a class="btn btn-primary"><i class="icon-comment icon-white"></i>Add comment</a>
+              <a class="btn btn-warning"><i class="icon-edit icon-white"></i>Edit event</a>
+              <a class="btn btn-danger"><i class="icon-remove icon-white"></i>Delete event</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="event-item">
+        <div class="event-date">
+          <div class="event-date-item date-popup thumbnail">
+            <div class="thumbnail"></div>
+          </div>
+          <div class="event-date-item date-leftarr"></div>
+          <div class="event-date-item date-point"></div>
+          <div class="event-date-item date-rightarr"></div>
+          <div class="event-date-item time-period thumbnail">
+            <div class="thumbnail"></div>
+          </div>
+        </div>
+        <div class="event-info thumbnail">
+          <div class="thumbnail">
+            <div class="map-image">
+              <img  />
+            </div>
+            <div class="event-description">
+              <p>Hey dear friends, Here is a video were you can see almost the entire progress of this realism drawing. The progress of the drawing is speed up. Finished draw..</p>
+            </div>
+
+            <div class="event-friends">
+              <ul class="thumbnails">
+                <li >
+                  <a href="#" class="thumbnail">
+                    <img src="{{ STATIC_URL }}/img/b.jpg" alt="">
                   </a>
                 </li>
                 <li >
@@ -98,78 +210,22 @@
               <ul class="thumbnails">
                 <li >
                   <a href="#" class="thumbnail">
-                    <img src="/static/img/b.jpg" alt="">
+                    <img src="{{ STATIC_URL }}/img/b.jpg" alt="">
                   </a>
                 </li>
                 <li >
                   <a href="#" class="thumbnail">
-                    <img src="/static/img/b.jpg" alt="">
+                    <img src="{{ STATIC_URL }}/img/b.jpg" alt="">
                   </a>
                 </li>
                 <li >
                   <a href="#" class="thumbnail">
-                    <img src="/static/img/b.jpg" alt="">
+                    <img src="{{ STATIC_URL }}/img/b.jpg" alt="">
                   </a>
                 </li>
                 <li >
                   <a href="#" class="thumbnail">
-                    <img src="/static/img/b.jpg" alt="">
-                  </a>
-                </li>
-                <li >
-                  <a href="#" class="btn btn-info control-btn view-btn"><span class="view-icon"></span><i></i><span class="btn-text">View Event</span></a>
-                </li>
-              </ul>
-            </div>
-            <div class="event-controls">
-              <a class="btn btn-primary"><i class="icon-comment icon-white"></i>Add comment</a>
-              <a class="btn btn-warning"><i class="icon-edit icon-white"></i>Edit event</a>
-              <a class="btn btn-danger"><i class="icon-remove icon-white"></i>Delete event</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="event-item">
-        <div class="event-date">
-          <div class="event-date-item date-popup thumbnail">
-            <div class="thumbnail"></div>
-          </div>
-          <div class="event-date-item date-leftarr"></div>
-          <div class="event-date-item date-point"></div>
-          <div class="event-date-item date-rightarr"></div>
-          <div class="event-date-item time-period thumbnail">
-            <div class="thumbnail"></div>
-          </div>
-        </div>
-        <div class="event-info thumbnail">
-          <div class="thumbnail">
-            <div class="map-image">
-              <img  />
-            </div>
-            <div class="event-description">
-              <p>Hey dear friends, Here is a video were you can see almost the entire progress of this realism drawing. The progress of the drawing is speed up. Finished draw..</p>
-            </div>
-
-            <div class="event-friends">
-              <ul class="thumbnails">
-                <li >
-                  <a href="#" class="thumbnail">
-                    <img src="/static/img/b.jpg" alt="">
-                  </a>
-                </li>
-                <li >
-                  <a href="#" class="thumbnail">
-                    <img src="/static/img/b.jpg" alt="">
-                  </a>
-                </li>
-                <li >
-                  <a href="#" class="thumbnail">
-                    <img src="/static/img/b.jpg" alt="">
-                  </a>
-                </li>
-                <li >
-                  <a href="#" class="thumbnail">
-                    <img src="/static/img/b.jpg" alt="">
+                    <img src="{{ STATIC_URL }}/img/b.jpg" alt="">
                   </a>
                 </li>
                 <li >
@@ -210,78 +266,22 @@
               <ul class="thumbnails">
                 <li >
                   <a href="#" class="thumbnail">
-                    <img src="/static/img/b.jpg" alt="">
+                    <img src="{{ STATIC_URL }}/img/b.jpg" alt="">
                   </a>
                 </li>
                 <li >
                   <a href="#" class="thumbnail">
-                    <img src="/static/img/b.jpg" alt="">
+                    <img src="{{ STATIC_URL }}/img/b.jpg" alt="">
                   </a>
                 </li>
                 <li >
                   <a href="#" class="thumbnail">
-                    <img src="/static/img/b.jpg" alt="">
+                    <img src="{{ STATIC_URL }}/img/b.jpg" alt="">
                   </a>
                 </li>
                 <li >
                   <a href="#" class="thumbnail">
-                    <img src="/static/img/b.jpg" alt="">
-                  </a>
-                </li>
-                <li >
-                  <a href="#" class="btn btn-info control-btn view-btn"><span class="view-icon"></span><i></i><span class="btn-text">View Event</span></a>
-                </li>
-              </ul>
-            </div>
-            <div class="event-controls">
-              <a class="btn btn-primary"><i class="icon-comment icon-white"></i>Add comment</a>
-              <a class="btn btn-warning"><i class="icon-edit icon-white"></i>Edit event</a>
-              <a class="btn btn-danger"><i class="icon-remove icon-white"></i>Delete event</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="event-item">
-        <div class="event-date">
-          <div class="event-date-item date-popup thumbnail">
-            <div class="thumbnail"></div>
-          </div>
-          <div class="event-date-item date-leftarr"></div>
-          <div class="event-date-item date-point"></div>
-          <div class="event-date-item date-rightarr"></div>
-          <div class="event-date-item time-period thumbnail">
-            <div class="thumbnail"></div>
-          </div>
-        </div>
-        <div class="event-info thumbnail">
-          <div class="thumbnail">
-            <div class="map-image">
-              <img  />
-            </div>
-            <div class="event-description">
-              <p>Hey dear friends, Here is a video were you can see almost the entire progress of this realism drawing. The progress of the drawing is speed up. Finished draw..</p>
-            </div>
-
-            <div class="event-friends">
-              <ul class="thumbnails">
-                <li >
-                  <a href="#" class="thumbnail">
-                    <img src="/static/img/b.jpg" alt="">
-                  </a>
-                </li>
-                <li >
-                  <a href="#" class="thumbnail">
-                    <img src="/static/img/b.jpg" alt="">
-                  </a>
-                </li>
-                <li >
-                  <a href="#" class="thumbnail">
-                    <img src="/static/img/b.jpg" alt="">
-                  </a>
-                </li>
-                <li >
-                  <a href="#" class="thumbnail">
-                    <img src="/static/img/b.jpg" alt="">
+                    <img src="{{ STATIC_URL }}/img/b.jpg" alt="">
                   </a>
                 </li>
                 <li >
