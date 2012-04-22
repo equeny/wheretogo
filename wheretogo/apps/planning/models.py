@@ -171,6 +171,7 @@ class Planning(models.Model):
         (STATUS_DONE, _('Done'))
     )
     status = models.IntegerField(choices=STATUSES, default=STATUS_IN_PROGRESS)
+    created = models.DateTimeField(auto_now_add=True)
 
     def find_where_to_go(self):
 

@@ -1,18 +1,53 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block extra_css %}
+  @import url("/static/css/layout/events.css");
+{% endblock %}
 
-{% if results %}
-<p>My results:</p>
-<ul>
-  {% for result in results %}
-    <li>
-        <a href="{% if result.status == 1 %}{% url planning_status result.id %}{% else %}#{% endif %}">{{ result }}({{ result.get_status_display }})</a>
-    </li>
-  {% endfor %}
-</ul>
-{% else %}
-  <p>No results.</p>
-{% endif %}
+{% block content %}
+<div id="content" class="events">
+  <div class="wrapper">
+    <div class="events-controls switch">
+      <a href="{% url friends_choose %}" class="btn btn-primary btn-large control-btn add-btn"><span class="add-icon"></span><i></i><span class="btn-text">Plan new event</span></a>
+      <div class="clearfix-bg"></div>
+    </div>
+
+    {% if results %}
+      <div class="event-container switch">
+        {% for result in results %}
+          <div class="event-item">
+            <div class="event-info thumbnail">
+              <div class="thumbnail">
+                <div class="map-image">
+                  <img  />
+                </div>
+                <div class="event-description">
+                  <p>{{ result.created }}</p>
+                </div>
+                <div class="event-friends">
+                  <ul class="thumbnails">
+                    {% for profile in result.profiles.all %}
+                      <li>
+                        <a href="http://facebook.com/{{ profile.fid }}" class="thumbnail">
+                          <img src="https://graph.facebook.com/{{ profile.fid }}/picture" alt="{{ profile.name }}">
+                        </a>
+                      </li>
+                    {% endfor %}
+                    <li >
+                      <a href="{% if result.status == 1 %}{% url planning_status result.id %}{% else %}#{% endif %}" class="btn btn-info control-btn view-btn"><span class="view-icon"></span><i></i><span class="btn-text">{% if result.status == 1 %}View status{% else %}View result{% endif %}</span></a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>No results.</p>
+    {% endif %}
+  </div>
+</div>
+
 
 {% endblock content %}
