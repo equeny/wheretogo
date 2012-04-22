@@ -26,7 +26,7 @@ class FacebookProfile(models.Model):
     last_friends_update = models.DateField(auto_now_add=True)
 
     def __unicode__(self):
-        return u'Facebook user for %s' % self.user
+        return u'%s' % self.name
 
 
 def new_users_handler(sender, user, response, details, **kwargs):
