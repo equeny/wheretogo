@@ -294,7 +294,7 @@ class Planning(models.Model):
             place_result.category_rank = 0
             for profile in profiles:
                 place_result.category_rank += \
-                    float(profile.categories.get(place.category, 1)) / \
+                    float(profile.categories.get(place.category, 0.01)) / \
                     profile.categories_count if profile.categories_count \
                     else 0
             # normalization
