@@ -16,13 +16,21 @@
       <div class="event-container switch">
         {% for result in results %}
           <div class="event-item">
+            <div class="event-date">
+              <div class="event-date-item date-popup thumbnail">
+                <div class="thumbnail">{{ result.created }}</div>
+              </div>
+              <div class="event-date-item date-leftarr"></div>
+              <div class="event-date-item date-point"></div>
+              <div class="event-date-item date-rightarr"></div>
+              <div class="event-date-item time-period thumbnail">
+                <div class="thumbnail"></div>
+              </div>
+            </div>
             <div class="event-info thumbnail">
               <div class="thumbnail">
                 <div class="map-image">
-                  <img  />
-                </div>
-                <div class="event-description">
-                  <p>{{ result.created }}</p>
+                  <img src="http://graph.facebook.com/{{ result.results.all.0.place.fid }}/picture?type=square"  />
                 </div>
                 <div class="event-friends">
                   <ul class="thumbnails">
