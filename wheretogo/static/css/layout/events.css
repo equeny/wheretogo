@@ -315,6 +315,10 @@
 	margin: 0 auto;
 }
 
+.events.result .datelabel{
+	display:none !important;
+}
+
 .events.result .event-container{
 	background-image:none !important;
 }
