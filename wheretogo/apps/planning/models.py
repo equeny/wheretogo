@@ -322,7 +322,7 @@ class PlanningResultPlace(models.Model):
 
     class Meta:
         unique_together = ('planning', 'place')
-        ordering = ('-category_rank',)
+        ordering = ('-rank',)
 
 
 class PlanningStatusEvent(models.Model):
