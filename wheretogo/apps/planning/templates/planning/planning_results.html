@@ -35,13 +35,13 @@
               <div class="event-friends">
                 <ul class="thumbnails">
                   {% for friend in planning.profiles.all|random_results:"4" %}
-                  <li style="float:right; margin-right:15px;">
+                  <li >
                     <a href="http://facebook.com/{{ friend.fid }}" class="thumbnail">
                       <img src="{{ friend.picture }}" alt="{{ friend.name }}">
                     </a>
                   </li>
                   {% endfor %}
-                  <li>
+                  <li style="float:right; margin-right:15px;">
                   <a href="http://facebook.com/{{ result.place.fid }}" class="btn btn-info control-btn view-btn"><span class="view-icon"></span><i></i><span class="btn-text">View Place</span></a>
                   </li>
                 </ul>
