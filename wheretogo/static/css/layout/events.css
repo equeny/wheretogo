@@ -310,3 +310,11 @@
 	-o-transition: opacity 0.5s ease;
 	transition: opacity 0.5s ease;
 }
+
+.events.result .event-item {
+	margin: 0 auto;
+}
+
+.events.result .event-container{
+	background-image:none !important;
+}
