@@ -65,7 +65,7 @@ def friends_choose(request):
             return redirect('planning_status', planning.id)
 
     context = {
-        'friends': friends,
+        'friends': list(friends) + [user.fb_user],
         'form': form
     }
     return render(request, 'planning/friends_choose.html', context)

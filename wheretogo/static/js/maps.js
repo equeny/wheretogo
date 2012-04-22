@@ -1,4 +1,5 @@
- 
+var circ = undefined;
+var point = undefined;   
 
     function bound(value, opt_min, opt_max) {
       if (opt_min != null) value = Math.max(value, opt_min);
@@ -50,7 +51,7 @@
     };
 
 
-  var onloading = function() {
+  function initialize() {
     var mapOptions = {
       zoom: 12,
       center: new google.maps.LatLng(50.45000001,30.50000001),
@@ -60,8 +61,6 @@
     var map = new google.maps.Map(document.getElementById("map_canvas"),
         mapOptions); 
     
-	var circ = undefined;
-	var point = undefined;
 	var radius = 2000;
     jQuery('#m').on('click', function(event) {
         radius -= (radius >= 1000)?500:0;
@@ -75,23 +74,39 @@
     google.maps.event.addListener(map, 'click', function(event) {
     	 
     	var populationOptions = {
-    	        strokeColor: "#FF0000",
-    	        strokeOpacity: 0.8,
+    	        strokeColor: "#0088cc",
+    	        strokeOpacity: 0.5,
     	        strokeWeight: 2,
-    	        fillColor: "#FF0000",
+    	        fillColor: "#5BB75B",
     	        fillOpacity: 0.35,
     	        map: map,
     	        center: event.latLng,
     	        radius: radius
     	      };
-    	circ = circ || new google.maps.Circle(populationOptions);     
+    	circ = circ || new google.maps.Circle(populationOptions);   
+    	circ.setCenter(event.latLng);
     	point = point || new google.maps.Marker({
             position: event.latLng,
             map: map,
             title: 'Your event place range'
           });
+    	point.setPosition(event.latLng);
      });
     
-  }
+  } 
 
-  $(document).ready(onloading);
+  $(function() {
+    initialize();
+    $('.friends-names-overlay .friend').live('click', function() {
+      $('select[name=profiles] option[value=' + $(this).attr('id') + "]" ).attr(
+        'selected', 'selected'
+      );
+    });
+    $('.result-box span').live('click', function() {
+      $('select[name=profiles] option[value=' + $(this).attr('uid') + "]" ).removeAttr('selected');
+    });
+    $('form').submit(function() {
+      $('#lat').val(point.getPosition().lat());
+      $('#lon').val(point.getPosition().lng());
+    });
+  });

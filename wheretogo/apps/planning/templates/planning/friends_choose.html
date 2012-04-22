@@ -1,7 +1,57 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <p>Choose friends.</p>
+  <div id="content" class="edit">
+    <div class="container thumbnail">
+      <div id="friends-picker">
+        {% for friend in friends %}
+          <div class="friend {% if friend.user == user %}hidden{% endif %}" id="{{ friend.id }}">
+            <img src="http://graph.facebook.com/{{ friend.fid }}/picture?type=square" /><span>{{ friend.name }}</span>
+          </div>
+        {% endfor %}
+      </div>          
+    </div>
+    {% comment %}
+      <div class="wrapper thumbnail">
+      <div class="date-picker">
+        <div class="dates"><p class="badge">Event dates:</p></div>
+        <div class="dates"><span class="caption">Start:</span><input id="startDate" type="text"/></div>
+        <div class="dates"><span class="caption">End:</span><input id="endDate" type="text"/></div>
+    </div>
+    {% endcomment %}
+    
+    <div class="wrapper thumbnail">
+        <div class="google-map">
+          <div class="radius-wrapper">
+            <button id="p" class="btn btn-success btn-mini"><i class="icon-resize-full icon-white"></i></button><br/>
+            <button id="m" class="btn btn-danger btn-mini"><i class="icon-resize-small icon-white"></i></button>
+          </div>              
+          <div id="map_canvas">
+          
+          </div>
+      </div>
+    </div>
+    <form action="{% url friends_choose %}" method="post">{% csrf_token %}
+      <div style="display:none">
+        <select name="profiles" multiple>
+        {% for friend in friends %}
+          <option {% if friend.user == user %}checked="checked"{% endif %} value="{{ friend.id }}" />
+        {% endfor %}
+        </select>
+        <input id="lat" name="lat" value="{{ form.lat.value }}" />
+        <input id="lon" name="lon" value="{{ form.lon.value }}" />
+        <input id="radius" name="radius" value="{{ form.radius.value }}" />
+      </div>
+      <div class="wrapper thumbnail">
+          <div class="edit-controls">
+           <button type="submit" class="btn btn-primary btn-large control-btn save-btn"><span class="save-icon"></span><i></i><span class="btn-text">Save event</span></button>           
+           <a href="#" class="btn btn-primary btn-large btn-danger control-btn cancel-btn"><span class="cancel-icon"></span><i></i><span class="btn-text">Cancel</span></a>
+      </div>
+    </form>
+  </div>
+</div>
+  {% comment %}
+    <p>Choose friends.</p>
   <form action="{% url friends_choose %}" method="post">{% csrf_token %}
     {% for friend in friends %}
       <input type="checkbox" name="friends" value="{{ friend.id }}" /><img src="{{ friend.picture }}" alt="{{ friend.name }}">{{ friend.name }}<br />
@@ -11,4 +61,8 @@
     <input type="submit" value="Go">
   </form>
 
+  {% endcomment %}
+  <script type="text/javascript">
+
+  </script>
 {% endblock content %}
