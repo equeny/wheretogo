@@ -314,3 +314,13 @@ class PlanningStatusEvent(models.Model):
 #     place1 = models.ForeignKey(Place, related_name='similar_to')
 #     place2 = models.ForeignKey(Place, related_name='similar_from')
 #     rank = models.FloatField(default=0)
+
+
+class UserRating(models.Model):
+    user = models.ForeignKey(User, related_name='rating')
+    place = models.ForeignKey(Place, related_name='rating')
+    plan = models.ForeignKey(Planning, related_name='rating')
+    number = models.IntegerField()
+
+    def __unicode__(self):
+        return '%s - %s' % (self.user, self.number)

@@ -10,9 +10,15 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect
 
 from profiles.models import FacebookProfile
-from planning.models import Planning, PlanningResultPlace
+from planning.models import Planning, PlanningResultPlace, UserRating, Place
 from planning.tasks import find_where_to_go
 from planning.forms import PlanningForm
+
+PLACE_MARKS = {
+    'first_mark_code': 1,
+    'second_mark_code': 2,
+    'third_mark_code': 3
+}
 
 
 @login_required
@@ -108,3 +114,27 @@ def planning_status(request, id):
 def planning_results(request, id):
     planning = get_object_or_404(Planning, id=id)
     return render(request, 'planning/planning_results.html', {'planning': planning})
+
+
+@login_required
+def place_rate(request, plan_id, place_id):
+    planning = Planning.objects.get(id=plan_id)
+    value = request.GET['code']
+    if value in PLACE_MARKS:
+        UserRating.objects.filter(
+            user=request.user,
+            plan__id=planning.id,
+            number=PLACE_MARKS[value]
+        ).delete()
+        try:
+            rate = UserRating.objects.get(user=request.user, place__id=place_id, plan__id=plan_id)
+            rate.number = PLACE_MARKS[value]
+            rate.save()
+        except UserRating.DoesNotExist:
+            rate = UserRating.objects.create(
+                user=request.user,
+                place=Place.objects.get(id=place_id),
+                plan=planning,
+                number=PLACE_MARKS[value]
+            )
+        return redirect('planning_results', planning.id)
