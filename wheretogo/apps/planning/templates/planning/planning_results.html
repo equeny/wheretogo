@@ -17,10 +17,10 @@
       <div class="clearfix-bg"></div>
     </div>
 
-    <div class="event-container switch">	  
+    <div class="event-container switch">
       <div class="datelabel">
         <span class="badge badge-info">Event date</span>
-      </div> 
+      </div>
       {% for result in planning.results.all %}
         <div class="event-item">
           <div class="event-info thumbnail">
@@ -30,18 +30,16 @@
               </div>
               <div class="event-description">
                 <p>{{ result.place }}</p>
-                {{ result.place.rating.all }}
               </div>
               <div class="event-friends">
                 <ul class="thumbnails">
-                  {% for friend in planning.profiles.all|random_results:"4" %}
-                  <li >
-                    <a href="http://facebook.com/{{ friend.fid }}" class="thumbnail">
-                      <img src="{{ friend.picture }}" alt="{{ friend.name }}">
-                    </a>
-                  </li>
+                  {% for rating in result.place.rating.all %}
+                    <li>
+                      <img src="{{ rating.user.fb_user.picture }}" alt="{{ rating.user.fb_user }}"> {{ rating.user.fb_user }} - {{ rating.number }}
+                    </li>
                   {% endfor %}
                   <li style="float:right; margin-right:15px;">
+                  <li>
                   <a href="http://facebook.com/{{ result.place.fid }}" class="btn btn-info control-btn view-btn"><span class="view-icon"></span><i></i><span class="btn-text">View Place</span></a>
                   </li>
                 </ul>

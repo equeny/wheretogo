@@ -148,7 +148,7 @@ AUTHENTICATION_BACKENDS = (
 
 FACEBOOK_APP_ID = '107790869310294'
 FACEBOOK_API_SECRET = 'b9bef1509c775d7a7b788e15badfe5cf'
-FACEBOOK_PROFILE_EXTRA_PARAMS = {'fields': 'name,id,picture,username,name,first_name,last_name'}
+FACEBOOK_PROFILE_EXTRA_PARAMS = {'fields': 'name,id,picture,username,name,first_name,last_name,email'}
 LOGIN_URL = '/'
 LOGIN_REDIRECT_URL = '/planning/'
 LOGIN_ERROR_URL = '/'
