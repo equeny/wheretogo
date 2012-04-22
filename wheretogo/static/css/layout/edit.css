@@ -2,6 +2,17 @@
 	margin: 40px 0;
 }
 
+.edit .small-logo {
+	text-align: center;
+	padding: 10px 10px 20px 10px;
+}
+
+.edit .small-logo span {
+	font-size: 16px;
+	padding-left: 10px;
+	font-weight: bold;
+}
+
 #friends-picker,.date-picker,.google-map,.edit-controls {
 	background: white;
 	border-radius: 5px;
@@ -40,11 +51,14 @@
 
 .result-box {
 	min-height: 0px;
+	display: table;
+	width: 100%;
 }
 
 .result-box .badge {
-	margin-right: 5px;
 	padding: 5px 15px;
+	float: left;
+	margin: 5px;
 }
 
 .date-picker {
@@ -87,11 +101,10 @@
 }
 
 .radius-wrapper {
-	position: relative;
-	margin-bottom: -60px;
+	position: absolute;
 	z-index: 100;
-	top: 315px;
-	left: 30px;
+	margin-top: 315px;
+	margin-left: 30px;
 }
 
 .radius-wrapper .btn {
