@@ -5,15 +5,29 @@ from datetime import date, timedelta
 
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, Http404
+from django.core.exceptions import ObjectDoesNotExist
 
+from social_auth.models import UserSocialAuth
 from profiles.models import FacebookProfile
 
 
 @login_required
 def friends_choose(request):
     user = request.user
-    oauth_token = user.fb_user.oauth_token
+    try:
+        fb_user = FacebookProfile.objects.get(user=user)
+    except ObjectDoesNotExist:
+        try:
+            social_user = UserSocialAuth.objects.get(user=user)
+            fb_user = FacebookProfile.objects.create(
+                user=user,
+                oauth_token=social_user.tokens['access_token'],
+            )
+        except UserSocialAuth.DoesNotExist:
+            raise Http404
+
+    oauth_token = fb_user.oauth_token
     friends = user.friends.all()
     week_ago = date.today() - timedelta(7)
     if not friends or user.fb_user.last_friends_update < week_ago:
