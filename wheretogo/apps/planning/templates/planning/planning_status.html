@@ -22,3 +22,21 @@
 </div>
 
 {% endblock content %}
+
+{% block extra_js %}
+  <script type="text/javascript">
+    $(function() {
+      setInterval(function() {
+        $.getJSON(window.location.href, function(response) {
+            $('.bar').css('width', response.percent + '%');
+            $('.statuses').children().remove();
+            $.each(response.statuses, function() {
+                $('<p></p>').text(this.message).appendTo($('.statuses'));
+            });
+            if (response.percent == 100)
+                window.location.href = '{% url planning_results planning.id %}'
+        });
+      }, 1000);
+    });
+  </script>
+{% endblock extra_js %}

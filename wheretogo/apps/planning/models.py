@@ -176,6 +176,7 @@ class Planning(models.Model):
     def find_where_to_go(self):
 
         # getting places in current radius
+        self.percent = 10
         self.status_events.create(
             message=_('Fetching  places from selected circle')
         )

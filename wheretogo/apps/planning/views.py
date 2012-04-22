@@ -6,6 +6,7 @@ from datetime import date, timedelta
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect
 
@@ -107,7 +108,16 @@ def planning_status(request, id):
     if planning.status == Planning.STATUS_DONE:
         pass
         # redirect to results
-    return render(request, 'planning/planning_status.html', {'planning': planning})
+    if request.is_ajax():
+        response = json.dumps({
+            'statuses': [{
+                'type': s.event_type, 'message': s.message
+            } for s in planning.status_events.all()],
+            'percent': planning.percent
+        })
+        return HttpResponse(response, mimetype="application/json")
+    else:
+        return render(request, 'planning/planning_status.html', {'planning': planning})
 
 
 @login_required

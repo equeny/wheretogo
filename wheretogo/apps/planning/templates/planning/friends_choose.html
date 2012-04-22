@@ -62,7 +62,9 @@
   </form>
 
   {% endcomment %}
-  <script type="text/javascript">
-
-  </script>
 {% endblock content %}
+
+{% block extra_js %}
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+  <script type="text/javascript" src="/static/js/maps.js"></script>  
+{% endblock extra_js %}
