@@ -35,7 +35,7 @@
       <div style="display:none">
         <select name="profiles" multiple>
         {% for friend in friends %}
-          <option {% if friend.user == user %}checked="checked"{% endif %} value="{{ friend.id }}" />
+          <option {% if friend.user == user %}selected="selected"{% endif %} value="{{ friend.id }}" />
         {% endfor %}
         </select>
         <input id="lat" name="lat" value="{{ form.lat.value }}" />

@@ -100,17 +100,17 @@ class PlaceManager(models.Manager):
             'access_token': oauth_token,
             'limit': 500
         })
-        logger.debug('Trying to get places list from Facebook with url: %s' % path)
+        logger.debug(u'Trying to get places list from Facebook with url: %s' % path)
         response = urllib2.urlopen(path)
         data = json.loads(response.read())
         # TODO retrieve info from next pages if numbers less than 500
         results = []
         for place in data['data']:
-            logger.debug('Trying to add place "%s" to db' % place['name'])
+            logger.debug(u'Trying to add place "%s" to db' % place['name'])
             place_category = normalize_place_category(place['category'], place['name'])
             if place_category not in VALID_PLACE_CATEGORIES:
                 logger.debug(
-                    'Place category is not valid(%s). Ignoring' % place_category
+                    u'Place category is not valid(%s). Ignoring' % place_category
                 )
                 continue
             try:
@@ -125,7 +125,7 @@ class PlaceManager(models.Manager):
                 response = urllib2.urlopen(path)
                 page_data = json.loads(response.read())
                 if not page_data:
-                    logger.debug('Empty results for page %s' % place['id'])
+                    logger.debug(u'Empty results for page %s' % place['id'])
                     continue
                 place_obj.likes_count = page_data.get('likes', 0)
 
@@ -215,14 +215,14 @@ class Planning(models.Model):
                     # skip check-ins without place
                     continue
                 logger.debug(
-                    'Parsing check-in for place "%s"' % checkin['place']['name']
+                    u'Parsing check-in for place "%s"' % checkin['place']['name']
                 )
                 place_id = checkin['place']['id']
                 path = 'https://graph.facebook.com/%s' % place_id
                 response = urllib2.urlopen(path)
                 data = json.loads(response.read())
                 if not data:
-                    logger.debug('Empty results for page %s' % place_id)
+                    logger.debug(u'Empty results for page %s' % place_id)
                     continue
                 place_category = normalize_place_category(
                     data.get('category', ''),
@@ -252,7 +252,7 @@ class Planning(models.Model):
             profile.categories = profile_categories
             profile.categories_count = sum(profile_categories.values())
             profile.save()
-            logger.debug('Categories for user %s: %s' % (profile.fid, profile_categories))
+            logger.debug(u'Categories for user %s: %s' % (profile.fid, profile_categories))
 
         # going throw places in current radius and determining how good it's to
         # to each user
@@ -273,7 +273,7 @@ class Planning(models.Model):
             place_result.category_rank = 0
             for profile in profiles:
                 place_result.category_rank += \
-                    float(profile.categories.get(place.category, 0)) / \
+                    float(profile.categories.get(place.category, 1)) / \
                     profile.categories_count if profile.categories_count \
                     else 0
             # normalization
