@@ -1,0 +1,7 @@
+.status-bar .progress {
+    height: auto;
+}
+.status-bar .bar {
+    height: 30px;
+    borde-radius:4px 0 0 4px;
+}

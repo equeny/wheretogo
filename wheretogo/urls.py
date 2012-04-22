@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     url(r'', include('social_auth.urls')),
     url(r'^test/$', TemplateView.as_view(template_name="test.html"), name='test'),
     url(r'^event/$', TemplateView.as_view(template_name="event.html"), name='event'),
+    url(r'^status-bar/$', TemplateView.as_view(template_name="status-bar.html"), name='status-bar'),
 )
 
 socialauth_registered.connect(new_users_handler, sender=None)
