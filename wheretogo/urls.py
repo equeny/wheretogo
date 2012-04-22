@@ -16,6 +16,7 @@ urlpatterns = patterns('',
     url(r'^logout/$', logout, name='logout'),
     url(r'', include('social_auth.urls')),
     url(r'^test/$', TemplateView.as_view(template_name="test.html"), name='test'),
+    url(r'^event/$', TemplateView.as_view(template_name="event.html"), name='event'),
 )
 
 socialauth_registered.connect(new_users_handler, sender=None)

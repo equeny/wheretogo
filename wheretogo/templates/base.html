@@ -10,8 +10,8 @@
     <style type="text/css">
       @import url("/static/css/start/jquery-ui.css");
       @import url("/static/css/layout/base.css");
-      @import url("/static/css/layout/events.css");
-      @import url("/static/css/layout/login-page.css");
+      {% block extra_css %}
+      {% endblock %}
     </style>
     <script type="text/javascript" src="/static/js/less.js"></script>
     <title>{% block title %}WhereToGo?{% endblock title %}</title>
