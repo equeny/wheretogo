@@ -59,7 +59,7 @@
 				var query = $(this).val();
 				$('.friends-names .friend.visible').each(function(){	
 					var itemVal = $(this).find('span').html();
-					if(itemVal.indexOf(query) != -1){
+					if(itemVal.toLowerCase().indexOf(query.toLowerCase()) != -1){
 						$(this).addClass('filtred').show();
 					} else {
 						$(this).removeClass('filtred').hide();
