@@ -10,7 +10,7 @@
 	top: 0px;
 	padding-top: 20px;
 	z-index: 100;
-	background: url("/img/b.jpg") repeat left top;
+	background: url("/static/img/b.jpg") repeat left top;
 	padding-bottom: 20px;
 	width: 960px;
 	z-index: 100;
@@ -34,7 +34,7 @@
 	height: 3px;
 	clear: both;
 	float: none;
-	background: url("/img/events/clearfix.png") no-repeat bottom left;
+	background: url("/static/img/events/clearfix.png") no-repeat bottom left;
 }
 
 .events .control-btn * {
@@ -51,28 +51,28 @@
 	width: 3px;
 	height: 30px;
 	margin: auto 5px;
-	background: url("/img/events/i.png") no-repeat;
+	background: url("/static/img/events/i.png") no-repeat;
 }
 
 .events .add-btn .add-icon {
 	width: 26px;
 	height: 26px;
 	margin-top: 2px;
-	background: url("/img/events/add.png") no-repeat;
+	background: url("/static/img/events/add.png") no-repeat;
 }
 
 .events .up-btn .up-icon {
 	width: 26px;
 	height: 26px;
 	margin-top: 2px;
-	background: url("/img/events/up.png") no-repeat;
+	background: url("/static/img/events/up.png") no-repeat;
 }
 
 .events .view-btn .view-icon {
 	width: 26px;
 	height: 26px;
 	margin-top: 2px;
-	background: url("/img/events/view.png") no-repeat;
+	background: url("/static/img/events/view.png") no-repeat;
 }
 
 .events .view-btn {
@@ -100,13 +100,13 @@
 	height: 3px;
 	clear: both;
 	float: none;
-	background: url("/img/events/clearfixinv.png") no-repeat;
+	background: url("/static/img/events/clearfixinv.png") no-repeat;
 }
 
 .event-container {
 	margin-top: 40px;
 	padding-bottom: 40px;
-	background: url("/img/events/timeline-bg.png") repeat-y 110px;
+	background: url("/static/img/events/timeline-bg.png") repeat-y 110px;
 }
 
 .datelabel {
