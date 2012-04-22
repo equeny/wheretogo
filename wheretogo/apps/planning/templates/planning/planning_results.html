@@ -9,7 +9,8 @@
 {% block content %}
 <div id="content" class="events">
   <div class="wrapper">
-    <div class="events-controls switch">
+	<div class="small-logo"><a href="/"><img src="/static/img/login-page/logo-small.png" /></a><span>We help you meet friends in the best way</span></div>
+	  <div class="events-controls switch">
       <a href="{% url planning_plannings %}" class="btn btn-primary btn-large btn-danger control-btn cancel-btn"><span class="cancel-icon"></span><i></i><span class="btn-text">Cancel</span></a>
       <a href="{% url friends_choose %}" class="btn btn-primary btn-large control-btn add-btn"><span class="add-icon"></span><i></i><span class="btn-text">Organize event</span></a>
       <a  class="btn btn-primary btn-large control-btn up-btn btn-success"><span class="up-icon"></span><i></i><span class="btn-text">Scroll to top event</span></a>
