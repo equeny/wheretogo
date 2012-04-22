@@ -6,4 +6,9 @@
     <li><img src="{{ friend.picture }}" alt="{{ friend.name }}">{{ friend.name }}</li>
   {% endfor %}
   </ul>
+  <ul>
+    {% for result in results %}
+      <li>{{ result }}</li>
+    {% endfor %}
+  </ul>
 {% endblock content %}

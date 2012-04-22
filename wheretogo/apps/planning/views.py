@@ -5,12 +5,11 @@ from datetime import date, timedelta
 
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden, Http404
-from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponseForbidden
+from django.db.models import Q
 
-from social_auth.models import UserSocialAuth
 from profiles.models import FacebookProfile
-from planning.models import Planning
+from planning.models import Planning, PlanningResultPlace
 from planning.tasks import find_where_to_go
 from planning.forms import PlanningForm
 
@@ -64,13 +63,27 @@ def friends_choose(request):
     return render(request, 'planning/friends_choose.html', context)
 
 
+@login_required
 def friends_analize(request):
     if request.method == "POST":
-        post_friends = request.POST.getlist('friends')
-        friends = FacebookProfile.objects.filter(id__in=post_friends)
+        friends = FacebookProfile.objects.filter(id__in=request.POST.getlist('friends'))
+        planning, created = Planning.objects.get_or_create(
+            organizer=request.user.fb_user,
+        )
+        results = PlanningResultPlace.objects.filter(planning=planning)
         context = {
             'friends': friends,
+            'results': results
         }
         return render(request, 'planning/friends_analize.html', context)
     else:
         return HttpResponseForbidden()
+
+
+@login_required
+def planning_results(request):
+    results = Planning.objects.filter(Q(organizer=request.user) | Q(profiles=request.user))
+    context = {
+        'results': results,
+    }
+    return render(request, 'planning/planning_results.html', context)

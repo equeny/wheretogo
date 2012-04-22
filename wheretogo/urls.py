@@ -12,7 +12,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', home, name='home'),
-    url(r'^friends/', include('planning.urls')),
+    url(r'^planning/', include('planning.urls')),
     url(r'^logout/$', logout, name='logout'),
     url(r'', include('social_auth.urls')),
     url(r'^test/$', TemplateView.as_view(template_name="test.html"), name='test'),
