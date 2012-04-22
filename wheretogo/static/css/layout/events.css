@@ -211,7 +211,7 @@
 }
 
 .time-period,.date-popup {
-	
+
 }
 
 .date-popup {
@@ -321,4 +321,10 @@
 
 .events.result .event-container{
 	background-image:none !important;
+}
+
+.date-popup .thumbnail{
+font-size: 11px;
+text-align: center;
+padding-top: 13px;
 }

@@ -44,7 +44,7 @@
                         </a>
                       </li>
                     {% endfor %}
-                    <li >
+                    <li style="float: right;">
                       <a href="{% if result.status == 1 %}{% url planning_status result.id %}{% else %}{% url planning_results result.id %}{% endif %}" class="btn btn-info control-btn view-btn"><span class="view-icon"></span><i></i><span class="btn-text">{% if result.status == 1 %}View status{% else %}View result{% endif %}</span></a>
                     </li>
                   </ul>
