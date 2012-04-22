@@ -11,6 +11,14 @@ class PlanningAdmin(admin.ModelAdmin):
             planning.find_where_to_go()
 
 
+class PlaceAdmin(admin.ModelAdmin):
+    list_display = ('__unicode__', 'likes_count')
+
+
+class PlanningResultPlaceAdmin(admin.ModelAdmin):
+    list_display = ('__unicode__', 'rank', 'likes_rank', 'category_rank')
+
+
 admin.site.register(Planning, PlanningAdmin)
-admin.site.register(Place)
-admin.site.register(PlanningResultPlace)
+admin.site.register(Place, PlaceAdmin)
+admin.site.register(PlanningResultPlace, PlanningResultPlaceAdmin)

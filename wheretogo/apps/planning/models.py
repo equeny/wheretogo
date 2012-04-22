@@ -98,7 +98,7 @@ class PlaceManager(models.Manager):
             'center': "%f,%f" % (lat, lon),
             'distance': "%.0f" % radius,
             'access_token': oauth_token,
-            'limit': 2000
+            'limit': 500
         })
         logger.debug('Trying to get places list from Facebook with url: %s' % path)
         response = urllib2.urlopen(path)
@@ -113,13 +113,22 @@ class PlaceManager(models.Manager):
                     'Place category is not valid(%s). Ignoring' % place_category
                 )
                 continue
-
             try:
                 place_obj = Place.objects.get(
                     fid=place['id'],
                 )
             except Place.DoesNotExist:
                 place_obj = Place(fid=place['id'])
+            if place_obj.likes_count < 0:
+                # getting extended info about page from FB
+                path = 'https://graph.facebook.com/%s' % place['id']
+                response = urllib2.urlopen(path)
+                page_data = json.loads(response.read())
+                if not page_data:
+                    logger.debug('Empty results for page %s' % place['id'])
+                    continue
+                place_obj.likes_count = page_data.get('likes', 0)
+
             place_obj.name = place['name']
             place_obj.fid = place['id']
             place_obj.category = place_category
@@ -136,7 +145,7 @@ class Place(models.Model):
     lat = models.FloatField(_('Latitude'))
     lon = models.FloatField(_('Latitude'))
     category = models.CharField(_('Category'), max_length=50)
-    likes_count = models.PositiveIntegerField(default=0)
+    likes_count = models.PositiveIntegerField(default=-1)
 
     objects = PlaceManager()
 
@@ -167,6 +176,7 @@ class Planning(models.Model):
         profiles = self.profiles.all()
         for profile in profiles:
             if profile.last_changes:
+                # fetch only changes from last update
                 path = 'https://graph.facebook.com/%s/locations?access_token=%s&since=%s' % (
                     profile.fid, self.organizer.oauth_token,
                     int(time.mktime((profile.last_changes).timetuple()))
@@ -201,6 +211,21 @@ class Planning(models.Model):
                 if place_category in VALID_PLACE_CATEGORIES:
                     profile_categories.setdefault(place_category, 0)
                     profile_categories[place_category] += 1
+
+                    # # saving page info to database
+                    # try:
+                    #     place_obj = Place.objects.get(
+                    #         fid=place_id
+                    #     )
+                    # except Place.DoesNotExist:
+                    #     place_obj = Place(fid=place_id)
+                    #     place_obj
+                    #     place_obj.fid = place['id']
+                    #     place_obj.category = place_category
+                    #     place_obj.lat = place['location']['latitude']
+                    #     place_obj.lon = place['location']['longitude']
+
+            profile.last_changes = datetime.now()
             profile.categories_data = json.dumps(profile_categories)
             profile.categories = profile_categories
             profile.categories_count = sum(profile_categories.values())
@@ -210,25 +235,45 @@ class Planning(models.Model):
         # going throw places in current radius and determining how good it's to
         # to each user
 
+        max_likes_count = 1
         for place in places:
+            if place.likes_count > max_likes_count:
+                max_likes_count = place.likes_count
+
+        for place in places:
+            place_result, c = PlanningResultPlace.objects.get_or_create(
+                planning=self,
+                place=place
+            )
+            place_result.category_rank = 0
             for profile in profiles:
-                place_result, c = PlanningResultPlace.objects.get_or_create(
-                    planning=self,
-                    place=place
-                )
                 place_result.category_rank += \
                     float(profile.categories.get(place.category, 0)) / \
                     profile.categories_count if profile.categories_count \
                     else 0
-                place_result.save()
+            # normalization
+            place_result.category_rank /= len(profiles)
+            place_result.likes_rank = float(place.likes_count) / max_likes_count
+            place_result.rank = place_result.likes_rank * place_result.category_rank
+            place_result.save()
 
 
 class PlanningResultPlace(models.Model):
     planning = models.ForeignKey(Planning)
     place = models.ForeignKey(Place)
     category_rank = models.FloatField(default=0)
-    likes_count = models.PositiveIntegerField(default=0)
+    likes_rank = models.FloatField(default=0)
+    rank = models.FloatField(default=0)
+
+    def __unicode__(self):
+        return unicode(self.place)
 
     class Meta:
         unique_together = ('planning', 'place')
         ordering = ('-category_rank',)
+
+
+# class Similarity(models.Model):
+#     place1 = models.ForeignKey(Place, related_name='similar_to')
+#     place2 = models.ForeignKey(Place, related_name='similar_from')
+#     rank = models.FloatField(default=0)
