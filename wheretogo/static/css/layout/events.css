@@ -77,7 +77,7 @@
 	width: 26px;
 	height: 26px;
 	margin-top: 2px;
-	background: url("/static/img/edit/add.png") no-repeat;
+	background: url("/static/img/edit/cancel.png") no-repeat;
 }
 
 .events .up-btn .up-icon {
