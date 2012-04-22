@@ -266,7 +266,7 @@ class Planning(models.Model):
             pool = eventlet.GreenPool()
             for place_category in pool.imap(fetch_checkin,  data.get('data', [])):
                 if place_category:
-                    profile_categories.setdefault(place_category, 0.01)
+                    profile_categories.setdefault(place_category, 0)
                     profile_categories[place_category] += 1
             profile.last_changes = datetime.now()
             profile.categories_data = json.dumps(profile_categories)
@@ -291,10 +291,10 @@ class Planning(models.Model):
                 planning=self,
                 place=place
             )
-            place_result.category_rank = 0
+            place_result.category_rank = 0.01
             for profile in profiles:
                 place_result.category_rank += \
-                    float(profile.categories.get(place.category, 0.01)) / \
+                    float(profile.categories.get(place.category, 0)) / \
                     profile.categories_count if profile.categories_count \
                     else 0
             # normalization
