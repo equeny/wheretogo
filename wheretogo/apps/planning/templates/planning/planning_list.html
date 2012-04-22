@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-<div id="content" class="events results">
+<div id="content" class="events">
   <div class="wrapper">
     <div class="events-controls switch">
       <a href="{% url friends_choose %}" class="btn btn-primary btn-large control-btn add-btn"><span class="add-icon"></span><i></i><span class="btn-text">Plan new event</span></a>
@@ -14,6 +14,9 @@
 
     {% if results %}
       <div class="event-container switch">
+        <div class="datelabel">
+          <span class="badge badge-info">Event date</span>
+        </div>
         {% for result in results %}
           <div class="event-item">
             <div class="event-date">
@@ -34,7 +37,7 @@
                 </div>
                 <div class="event-friends">
                   <ul class="thumbnails">
-                    {% for profile in result.profiles.all|slice:"8" %}
+                    {% for profile in result.profiles.all|slice:"4" %}
                       <li>
                         <a href="http://facebook.com/{{ profile.fid }}" class="thumbnail">
                           <img src="https://graph.facebook.com/{{ profile.fid }}/picture" alt="{{ profile.name }}">
