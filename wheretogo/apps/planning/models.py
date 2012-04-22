@@ -117,6 +117,7 @@ class PlaceManager(models.Manager):
                     u'Place category is not valid(%s). Ignoring' % place_category
                 )
                 continue
+            place['place_category'] = place_category
             places.append(place)
 
         def fetch(place):
@@ -141,9 +142,9 @@ class PlaceManager(models.Manager):
 
             place_obj.name = place['name']
             place_obj.fid = place['id']
-            place_obj.category = place_category
             place_obj.lat = place['location']['latitude']
             place_obj.lon = place['location']['longitude']
+            place_obj.category = place['place_category']
             place_obj.save()
             return place_obj
 
