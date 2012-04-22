@@ -69,6 +69,16 @@
 	margin-top: 2px;
 	background: url("/static/img/events/add.png") no-repeat;
 }
+.events .cancel-btn  {
+	margin-left:20px;
+}
+
+.events .cancel-btn .cancel-icon {
+	width: 26px;
+	height: 26px;
+	margin-top: 2px;
+	background: url("/static/img/edit/add.png") no-repeat;
+}
 
 .events .up-btn .up-icon {
 	width: 26px;
@@ -255,6 +265,7 @@
 	display: block;
 	margin-top: -20px;
 	margin-left: 10px;
+	width: 400px;
 }
 
 .event-friends .thumbnails>li {
