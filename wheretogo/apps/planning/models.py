@@ -227,20 +227,20 @@ class Planning(models.Model):
             profile_categories = json.loads(profile.categories_data) \
                 if profile.categories_data else {}
 
-            for checkin in data.get('data', []):
+            def fetch_checkin(checkin):
                 if 'place' not in checkin:
                     # skip check-ins without place
-                    continue
+                    return None
                 logger.debug(
                     u'Parsing check-in for place "%s"' % checkin['place']['name']
                 )
                 place_id = checkin['place']['id']
                 path = 'https://graph.facebook.com/%s' % place_id
-                response = urllib2.urlopen(path)
+                response = gurllib2.urlopen(path)
                 data = json.loads(response.read())
                 if not data:
                     logger.debug(u'Empty results for page %s' % place_id)
-                    continue
+                    return None
                 place_category = normalize_place_category(
                     data.get('category', ''),
                     data['name']
@@ -248,9 +248,8 @@ class Planning(models.Model):
                 if place_category in VALID_PLACE_CATEGORIES:
                     # we are assuming that user have been 1 time
                     # in each type of places
-                    profile_categories.setdefault(place_category, 1)
-                    profile_categories[place_category] += 1
-
+                    return place_category
+                return None
                     # # saving page info to database
                     # try:
                     #     place_obj = Place.objects.get(
@@ -264,6 +263,10 @@ class Planning(models.Model):
                     #     place_obj.lat = place['location']['latitude']
                     #     place_obj.lon = place['location']['longitude']
 
+            pool = eventlet.GreenPool()
+            for place_category in pool.imap(fetch_checkin,  data.get('data', [])):
+                profile_categories.setdefault(place_category, 1)
+                profile_categories[place_category] += 1
             profile.last_changes = datetime.now()
             profile.categories_data = json.dumps(profile_categories)
             profile.categories = profile_categories
