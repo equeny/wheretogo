@@ -1,0 +1,144 @@
+.edit .wrapper {
+	margin: 40px 0;
+}
+
+#friends-picker,.date-picker,.google-map,.edit-controls {
+	background: white;
+	border-radius: 5px;
+	padding: 30px 20px;
+}
+
+.friends-names {
+	background: white;
+	height: 300px;
+	overflow: auto;
+	height: 300px;
+}
+
+.friends-names .friend {
+	padding: 10px;
+	border-radius: 5px;
+	margin: 5px 0;
+	cursor: pointer;
+	border: 1px solid #fff;
+}
+
+.friends-names .friend:hover,.friends-names .highlighted {
+	border: 1px solid #3A87AD;
+}
+
+.friends-names .friend img {
+	padding-right: 20px;
+	width: 50px;
+	height: 50px;
+}
+
+.input-box input {
+	height: 30px;
+	width: 830px;
+}
+
+.result-box {
+	min-height: 0px;
+}
+
+.result-box .badge {
+	margin-right: 5px;
+	padding: 5px 15px;
+}
+
+.date-picker {
+	width: 100%;
+	display: table;
+}
+
+.date-picker p {
+	font-weight: bold;
+}
+
+.dates {
+	float: left;
+	margin-left: 31px;
+}
+
+.dates p {
+	 
+	font-size: 18px;
+	padding:5px 10px;
+}
+
+.dates input {
+	width: 239px;
+}
+
+.google-map {
+	width: 100%;
+	display: table;
+	height: 500px;
+}
+
+#map_canvas {
+	height: 100%;
+}
+
+.edit-controls {
+	display: table;
+	width: 100%;
+}
+
+.radius-wrapper {
+	position: relative;
+	margin-bottom: -60px;
+	z-index: 100;
+	top: 315px;
+	left: 30px;
+}
+
+.radius-wrapper .btn {
+	margin-bottom: 10px;
+}
+
+.edit .control-btn * {
+	display: block;
+	float: left;
+	vertical-align: middle;
+}
+
+.edit .control-btn {
+	padding: 6px 10px;
+}
+
+.edit .control-btn i {
+	width: 3px;
+	height: 30px;
+	margin: auto 5px;
+	background: url("/static/img/edit/i.png") no-repeat;
+}
+
+.edit .save-btn .save-icon {
+	width: 26px;
+	height: 26px;
+	margin-top: 2px;
+	background: url("/static/img/edit/save.png") no-repeat;
+}
+
+.edit .cancel-btn .cancel-icon {
+	width: 26px;
+	height: 26px;
+	margin-top: 2px;
+	background: url("/static/img/edit/cancel.png") no-repeat;
+}
+
+.edit .control-btn .btn-text {
+	text-shadow: 1px 1px 1px #555;
+	font-size: 18px;
+	padding-top: 4px;
+}
+
+.edit .save-btn {
+	float: right;
+}
+
+.edit .cancel-btn {
+	float: left;
+}

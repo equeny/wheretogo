@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+
+	<head>
+		<title>Where to GO?</title>	
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta property="og:title" content="Where to go with friends" />
+		<meta property="og:type" content="website" />
+		<style type="text/less">			
+			@import url("/css/less/bootstrap.less");			
+		</style>
+		<style type="text/css">			
+			@import url("/css/start/jquery-ui.css");
+			@import url("/css/layout/base.css");
+			@import url("/css/layout/edit.css");			
+		</style>
+		<script type="text/javascript" src="/js/less.js"></script>			
+		<script type="text/javascript" src="/js/jquery.min.js"></script>
+		<script type="text/javascript" src="/js/jquery-ui.js"></script>
+		<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="/js/website.js"></script>	
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script> 	
+ 		<script type="text/javascript" src="/js/maps.js"></script>	
+	</head>
+	<body>
+	  <div class="wrapper">
+		<div id="content" class="edit">
+		  <div class="container thumbnail">
+		    <div id="friends-picker">
+		    	<div class="friend hidden" id="1"><img /><span>Alex Pass</span></div>
+		    	<div class="friend hidden" id="2"><img /><span>Alex1 Pass</span></div>
+		    	<div class="friend" id="3"><img /><span>Alex1 Pass</span></div>
+		    	<div class="friend" id="4"><img /><span>Alex1 Pass3</span></div>
+		    	<div class="friend" id="5"><img /><span>Alex2 Pass3</span></div>
+		    	<div class="friend" id="6"><img /><span>Alex2 Pass</span></div>
+		    	<div class="friend" id="7"><img /><span>Alex2 Pass</span></div>
+		    	<div class="friend" id="8"><img /><span>Alex2 Pass</span></div>		    	
+		    </div>		    
+		  </div>
+		  <div class="wrapper thumbnail">
+		  	<div class="date-picker">
+			  <div class="dates"><p class="badge">Event dates:</p></div>
+		  	  <div class="dates"><span class="caption">Start:</span><input id="startDate" type="text"/></div>
+		  	  <div class="dates"><span class="caption">End:</span><input id="endDate" type="text"/></div>
+		  </div>
+		</div>
+		
+		<div class="wrapper thumbnail">
+		  	<div class="google-map">
+		  	  <div class="radius-wrapper">
+		  	  	<button id="p" class="btn btn-success btn-mini"><i class="icon-resize-full icon-white"></i></button><br/>
+		  	  	<button id="m" class="btn btn-danger btn-mini"><i class="icon-resize-small icon-white"></i></button>
+		  	  </div>		  	  
+		  	  <div id="map_canvas">
+		  	  
+		  	  </div>
+		  </div>
+		</div>
+		
+		<div class="wrapper thumbnail">
+		  	<div class="edit-controls">
+		  	 <a href="#" class="btn btn-primary btn-large control-btn save-btn"><span class="save-icon"></span><i></i><span class="btn-text">Save event</span></a>			 
+		 	 <a href="#" class="btn btn-primary btn-large btn-danger control-btn cancel-btn"><span class="cancel-icon"></span><i></i><span class="btn-text">Cancel</span></a>
+		</div>
+	  </div>
+	</body>
+</html>
