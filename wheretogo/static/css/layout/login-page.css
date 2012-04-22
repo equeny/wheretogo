@@ -1,4 +1,4 @@
-.about,.logo {
+.about,.login .thumbnail {
 	text-align: center;
 	margin: 40px auto;
 }
@@ -6,7 +6,7 @@
 .login p{
 	color: #333;
 	font-size:18px;
-	text-shadow: 1px 1px 1px #eee;
+	text-shadow: -1px 1px 1px #eee;
 }
 
 .sign-in {
@@ -40,4 +40,12 @@
 
 .sign-in a span {
 	color: white;
+}
+
+.logo{
+	margin:0;
+	box-shadow:inset -1px 1px 7px #555;
+	background: #fff;
+	border-radius: 10px;
+	padding: 15px 0;
 }
