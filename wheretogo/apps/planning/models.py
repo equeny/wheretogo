@@ -265,7 +265,7 @@ class Planning(models.Model):
 
             pool = eventlet.GreenPool()
             for place_category in pool.imap(fetch_checkin,  data.get('data', [])):
-                profile_categories.setdefault(place_category, 1)
+                profile_categories.setdefault(place_category, 0.01)
                 profile_categories[place_category] += 1
             profile.last_changes = datetime.now()
             profile.categories_data = json.dumps(profile_categories)
