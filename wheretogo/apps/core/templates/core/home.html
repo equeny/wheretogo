@@ -11,7 +11,7 @@
     <p>Get the most delicious recommendations from your friends and easily orginize an event.</p>
   </div>
   {% if request.user.is_authenticated %}
-  <p>Your token: {{ request.user.social_auth.all.0.tokens }}</p>
+  <p><a href="{% url friends_choose %}">Choose friends</a></p>
   <p><a href="{% url logout %}">Logout</a></p>
   {% else %}
   <div class="sign-in">

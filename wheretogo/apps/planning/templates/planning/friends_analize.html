@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <ul>
+  {% for friend in friends %}
+    <li><img src="{{ friend.picture }}" alt="{{ friend.name }}">{{ friend.name }}</li>
+  {% endfor %}
+  </ul>
+{% endblock content %}

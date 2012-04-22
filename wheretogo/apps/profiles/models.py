@@ -1,7 +1,4 @@
 import logging
-import urllib
-import urllib2
-import json
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -14,16 +11,19 @@ logger = logging.getLogger("wheretogo.%s" % __name__)
 class FacebookProfile(models.Model):
     user = models.OneToOneField(
         User, blank=True, null=True,
-        verbose_name=_('User')
+        verbose_name=_('User'), related_name='fb_user'
     )
-
+    users = models.ManyToManyField(User, related_name='friends',)
     fid = models.CharField(_('Facebook id'), max_length=50)
+    name = models.CharField(max_length=255, blank=True, null=True)
+    picture = models.CharField(max_length=255, blank=True, null=True)
     oauth_token = models.TextField(_('oauth_token'), null=True, blank=True)
     categories_data = models.TextField(blank=True, null=True)
     categories_count = models.PositiveIntegerField(default=0)
     last_change = models.DateField(
         _('Last change date'), blank=True, null=True
     )
+    last_friends_update = models.DateField(auto_now_add=True)
 
     def __unicode__(self):
         return u'Facebook user for %s' % self.user
