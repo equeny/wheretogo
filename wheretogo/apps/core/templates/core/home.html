@@ -9,14 +9,12 @@
     <div class="wrapper">
 <div class="thumbnail">
 		 			<div class="logo">
-		 				<img src="/static/img/login-page/logo.png" alt="" width="410px" />		 				
-		 			</div> 
-</div> 
+		 				<img src="/static/img/login-page/logo.png" alt="" width="410px" />
+		 			</div>
+</div>
       <div class="about">
         <p>Hi, {{ request.user }}.</p>
-        <p>Looking what to do in free tiem? Trust your friends’ choices?</p>
-        <p>WhereToGO gives you recommendations based on common taste between you and your Facebook friends.</p>
-        <p>Get the most delicious recommendations from your friends and easily orginize an event.</p>
+        <p>Choose group of your friend to spend time with and we will recommend you best places</p>
       </div>
       {% if request.user.is_authenticated %}
       <p><a href="{% url friends_choose %}">Choose friends</a></p>
