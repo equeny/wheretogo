@@ -2,3 +2,4 @@ django>=1.4
 psycopg2
 South
 django-social-auth
+django-celery

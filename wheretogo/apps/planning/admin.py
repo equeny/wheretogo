@@ -6,6 +6,8 @@ from planning.models import Planning, Place, PlanningResultPlace
 class PlanningAdmin(admin.ModelAdmin):
     actions = ['find_where_to_go']
 
+    list_display = ('organizer', 'status')
+
     def find_where_to_go(self, request, queryset):
         for planning in queryset:
             planning.find_where_to_go()

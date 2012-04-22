@@ -6,6 +6,11 @@ PROJECT_DIR = os.path.dirname(__file__)
 PUBLIC_DIR = os.path.join(PROJECT_DIR, 'public')
 sys.path.append(os.path.join(PROJECT_DIR, 'apps'),)
 
+import djcelery
+
+djcelery.setup_loader()
+
+
 DEBUG = False
 TEMPLATE_DEBUG = True
 
@@ -128,6 +133,7 @@ INSTALLED_APPS = (
     # apps
     'social_auth',
     'south',
+    'djcelery',
 
     # project
     'core',
@@ -148,7 +154,7 @@ LOGIN_ERROR_URL = '/'
 
 FACEBOOK_EXTENDED_PERMISSIONS = [
     'email', 'user_checkins', 'user_status', 'friends_status',
-    'friends_checkins', 'offline_access', 'user'
+    'friends_checkins', 'offline_access'
 ]
 
 # A sample logging configuration. The only tangible logging

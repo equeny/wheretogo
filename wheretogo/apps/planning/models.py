@@ -163,6 +163,14 @@ class Planning(models.Model):
     # 50, 30 - should be Kiev coordinates
     radius = models.FloatField(_('Radius'), default=10000)
 
+    STATUS_IN_PROGRESS = 1
+    STATUS_DONE = 2
+    STATUSES = (
+        (STATUS_IN_PROGRESS, _('In progress')),
+        (STATUS_DONE, _('Done'))
+    )
+    status = models.IntegerField(choices=STATUSES, default=STATUS_IN_PROGRESS)
+
     def find_where_to_go(self):
 
         # getting places in current radius
@@ -209,7 +217,9 @@ class Planning(models.Model):
                     data['name']
                 )
                 if place_category in VALID_PLACE_CATEGORIES:
-                    profile_categories.setdefault(place_category, 0)
+                    # we are assuming that user have been 1 time
+                    # in each type of places
+                    profile_categories.setdefault(place_category, 1)
                     profile_categories[place_category] += 1
 
                     # # saving page info to database
@@ -256,6 +266,9 @@ class Planning(models.Model):
             place_result.likes_rank = float(place.likes_count) / max_likes_count
             place_result.rank = place_result.likes_rank * place_result.category_rank
             place_result.save()
+
+        self.status = self.STATUS_DONE
+        self.save()
 
 
 class PlanningResultPlace(models.Model):

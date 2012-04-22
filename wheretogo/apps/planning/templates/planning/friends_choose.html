@@ -2,10 +2,12 @@
 
 {% block content %}
   <p>Choose friends.</p>
-  <form action="{% url friends_analize %}" method="post">{% csrf_token %}
+  <form action="{% url friends_choose %}" method="post">{% csrf_token %}
     {% for friend in friends %}
       <input type="checkbox" name="friends" value="{{ friend.id }}" /><img src="{{ friend.picture }}" alt="{{ friend.name }}">{{ friend.name }}<br />
     {% endfor %}
+    {% csrf_token %}
+    {{ form.as_p }}
     <input type="submit" value="Go">
   </form>
 
