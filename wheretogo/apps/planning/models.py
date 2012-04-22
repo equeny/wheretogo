@@ -6,6 +6,9 @@ import logging
 import urllib
 import urllib2
 import json
+import eventlet
+from eventlet.green import urllib2 as gurllib2
+
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -105,6 +108,7 @@ class PlaceManager(models.Manager):
         data = json.loads(response.read())
         # TODO retrieve info from next pages if numbers less than 500
         results = []
+        places = []
         for place in data['data']:
             logger.debug(u'Trying to add place "%s" to db' % place['name'])
             place_category = normalize_place_category(place['category'], place['name'])
@@ -113,6 +117,9 @@ class PlaceManager(models.Manager):
                     u'Place category is not valid(%s). Ignoring' % place_category
                 )
                 continue
+            places.append(place)
+
+        def fetch(place):
             try:
                 place_obj = Place.objects.get(
                     fid=place['id'],
@@ -122,11 +129,14 @@ class PlaceManager(models.Manager):
             if place_obj.likes_count < 0:
                 # getting extended info about page from FB
                 path = 'https://graph.facebook.com/%s' % place['id']
-                response = urllib2.urlopen(path)
+                logger.debug(
+                    u'Fetching place data for place %s' % place['id']
+                )
+                response = gurllib2.urlopen(path)
                 page_data = json.loads(response.read())
                 if not page_data:
                     logger.debug(u'Empty results for page %s' % place['id'])
-                    continue
+                    return None
                 place_obj.likes_count = page_data.get('likes', 0)
 
             place_obj.name = place['name']
@@ -135,7 +145,12 @@ class PlaceManager(models.Manager):
             place_obj.lat = place['location']['latitude']
             place_obj.lon = place['location']['longitude']
             place_obj.save()
-            results.append(place_obj)
+            return place_obj
+
+        pool = eventlet.GreenPool()
+        for place_obj in pool.imap(fetch, places):
+            if place_obj:
+                results.append(place_obj)
         return results
 
 
@@ -194,7 +209,7 @@ class Planning(models.Model):
             self.status_events.create(
                 message=_('Fetching  data for user %s...' % profile.name)
             )
-            self.percent = 30 + i / len(profiles) * 50
+            self.percent = int(30 + float(i) / len(profiles) * 50)
             self.save()
             if profile.last_changes:
                 # fetch only changes from last update
@@ -211,20 +226,21 @@ class Planning(models.Model):
 
             profile_categories = json.loads(profile.categories_data) \
                 if profile.categories_data else {}
-            for checkin in data.get('data', []):
+
+            def fetch_checkin(checkin):
                 if 'place' not in checkin:
                     # skip check-ins without place
-                    continue
+                    return None
                 logger.debug(
                     u'Parsing check-in for place "%s"' % checkin['place']['name']
                 )
                 place_id = checkin['place']['id']
                 path = 'https://graph.facebook.com/%s' % place_id
-                response = urllib2.urlopen(path)
+                response = gurllib2.urlopen(path)
                 data = json.loads(response.read())
                 if not data:
                     logger.debug(u'Empty results for page %s' % place_id)
-                    continue
+                    return None
                 place_category = normalize_place_category(
                     data.get('category', ''),
                     data['name']
@@ -232,9 +248,8 @@ class Planning(models.Model):
                 if place_category in VALID_PLACE_CATEGORIES:
                     # we are assuming that user have been 1 time
                     # in each type of places
-                    profile_categories.setdefault(place_category, 1)
-                    profile_categories[place_category] += 1
-
+                    return place_category
+                return None
                     # # saving page info to database
                     # try:
                     #     place_obj = Place.objects.get(
@@ -248,6 +263,10 @@ class Planning(models.Model):
                     #     place_obj.lat = place['location']['latitude']
                     #     place_obj.lon = place['location']['longitude']
 
+            pool = eventlet.GreenPool()
+            for place_category in pool.imap(fetch_checkin,  data.get('data', [])):
+                profile_categories.setdefault(place_category, 1)
+                profile_categories[place_category] += 1
             profile.last_changes = datetime.now()
             profile.categories_data = json.dumps(profile_categories)
             profile.categories = profile_categories

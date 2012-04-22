@@ -30,7 +30,7 @@ class FacebookProfile(models.Model):
 
 
 def new_users_handler(sender, user, response, details, **kwargs):
-    profile, c = FacebookProfile.objects.get_or_create(user=user, fid=response['id'])
+    profile, c = FacebookProfile.objects.create(user=user, fid=response['id'])
     profile.oauth_token = response['access_token']
     profile.name = response['name']
     profile.picture = response['picture']
