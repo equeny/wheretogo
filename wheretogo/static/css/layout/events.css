@@ -261,12 +261,11 @@
 .event-controls {
 	opacity: 0;
 	height: 50px;
+    margin-top: 38px;
+    margin-bottom: 10px;
 	padding-right: 15px;
 	background: #EDEFF4;
-	position: relative;
-	right: 0px;
 	float: right;
-	top: 38px;
 	box-shadow: inset 1px 1px 4px #ddd;
 	border-radius: 6px 0 0 6px;
 	-webkit-transition: opacity 0.5s ease;
