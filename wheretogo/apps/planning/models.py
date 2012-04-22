@@ -162,6 +162,7 @@ class Planning(models.Model):
     lon = models.FloatField(_('Latitude'), default=30.48955857)
     # 50, 30 - should be Kiev coordinates
     radius = models.FloatField(_('Radius'), default=10000)
+    percent = models.FloatField(_('Percent completed'), default=0)
 
     STATUS_IN_PROGRESS = 1
     STATUS_DONE = 2
@@ -174,15 +175,25 @@ class Planning(models.Model):
     def find_where_to_go(self):
 
         # getting places in current radius
+        self.status_events.create(
+            message=_('Fetching  places from selected circle')
+        )
         places = Place.objects.grab_places(
             self.lat, self.lon, self.radius, self.organizer.oauth_token
         )
+        self.percent = 30
+        self.save()
         # for faster check if user has checked in in current place
         place_ids = set([p.id for p in places])
 
         # getting facebook profiles checkins
         profiles = self.profiles.all()
-        for profile in profiles:
+        for i, profile in enumerate(profiles):
+            self.status_events.create(
+                message=_('Fetching  data for user %s...' % profile.name)
+            )
+            self.percent = 30 + i / len(profiles) * 50
+            self.save()
             if profile.last_changes:
                 # fetch only changes from last update
                 path = 'https://graph.facebook.com/%s/locations?access_token=%s&since=%s' % (
@@ -250,6 +261,9 @@ class Planning(models.Model):
             if place.likes_count > max_likes_count:
                 max_likes_count = place.likes_count
 
+        self.status_events.create(
+            message=_('Calculating recommendations...')
+        )
         for place in places:
             place_result, c = PlanningResultPlace.objects.get_or_create(
                 planning=self,
@@ -268,6 +282,10 @@ class Planning(models.Model):
             place_result.save()
 
         self.status = self.STATUS_DONE
+        self.percent = 100
+        self.status_events.create(
+            message=_('Done')
+        )
         self.save()
 
 
@@ -287,7 +305,7 @@ class PlanningResultPlace(models.Model):
 
 
 class PlanningStatusEvent(models.Model):
-    planning = models.ForeignKey(Planning, related_name='events')
+    planning = models.ForeignKey(Planning, related_name='status_events')
     event_type = models.TextField(blank=True, null=True)
     message = models.TextField()
 

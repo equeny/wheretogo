@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+  @import url("/static/css/layout/status-bar.css");
+{% endblock %}
+
+{% block content %}
+<div id="content" class="status-bar">
+  <div class="wrapper">
+    <div class="row">
+      <h1 class="span6 offset3">In progress</h1>
+      <div class="span6 offset3 progress progress-striped active">
+        <div class="bar" style="width: {{ planning.percent }}%;"></div>
+      </div>
+    </div>
+    <div class="statuses span6 offset3">
+      {% for event in planning.status_events.all %}
+        <p class="{{ event.type }}">{{ event.message }}</p>
+      {% endfor %}
+      </div>
+  </div>
+</div>
+
+{% endblock content %}

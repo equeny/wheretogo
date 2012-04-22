@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if results %}
+<p>My results:</p>
+<ul>
+  {% for result in results %}
+    <li>
+        <a href="{% if result.status == 1 %}{% url planning_status result.id %}{% else %}#{% endif %}">{{ result }}({{ result.get_status_display }})</a>
+    </li>
+  {% endfor %}
+</ul>
+{% else %}
+  <p>No results.</p>
+{% endif %}
+
+{% endblock content %}

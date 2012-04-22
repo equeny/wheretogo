@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.db.models import Q
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 
 from profiles.models import FacebookProfile
 from planning.models import Planning, PlanningResultPlace
@@ -56,6 +56,7 @@ def friends_choose(request):
         if form.is_valid():
             planning = form.save()
             find_where_to_go.delay(planning)
+            return redirect('planning_status', planning.id)
 
     context = {
         'friends': friends,
@@ -85,7 +86,7 @@ def friends_analize(request):
 def planning_list(request):
     results = Planning.objects.filter(
         Q(organizer=request.user.fb_user) | Q(profiles=request.user.fb_user)
-    )
+    ).distinct()
     context = {
         'results': results,
     }
