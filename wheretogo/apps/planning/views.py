@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 
 from profiles.models import FacebookProfile
 from planning.models import Planning, PlanningResultPlace
@@ -81,9 +82,22 @@ def friends_analize(request):
 
 
 @login_required
-def planning_results(request):
-    results = Planning.objects.filter(Q(organizer=request.user) | Q(profiles=request.user))
+def planning_list(request):
+    results = Planning.objects.filter(
+        Q(organizer=request.user.fb_user) | Q(profiles=request.user.fb_user)
+    )
     context = {
         'results': results,
     }
-    return render(request, 'planning/planning_results.html', context)
+    return render(request, 'planning/planning_list.html', context)
+
+
+@login_required
+def planning_status(request, id):
+    planning = get_object_or_404(Planning, id=id)
+    # TODO: add permissions check
+
+    if planning.status == Planning.STATUS_DONE:
+        pass
+        # redirect to results
+    return render(request, 'planning/planning_status.html', {'planning': planning})

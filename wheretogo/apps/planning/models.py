@@ -286,6 +286,11 @@ class PlanningResultPlace(models.Model):
         ordering = ('-category_rank',)
 
 
+class PlanningStatusEvent(models.Model):
+    planning = models.ForeignKey(Planning, related_name='events')
+    event_type = models.TextField(blank=True, null=True)
+    message = models.TextField()
+
 # class Similarity(models.Model):
 #     place1 = models.ForeignKey(Place, related_name='similar_to')
 #     place2 = models.ForeignKey(Place, related_name='similar_from')
