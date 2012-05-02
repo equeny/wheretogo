@@ -38,8 +38,8 @@ def friends_choose(request):
     #         raise Http404
 
     oauth_token = user.fb_user.oauth_token
-    friends = user.friends.all()
     week_ago = date.today() - timedelta(7)
+    friends = user.friends.all()
     if not friends or user.fb_user.last_friends_update < week_ago:
         path = 'https://graph.facebook.com/me/friends?%s' % urllib.urlencode({
             'access_token': oauth_token,
@@ -56,6 +56,9 @@ def friends_choose(request):
             fr.picture = friend['picture']
             fr.save()
             user.friends.add(fr)
+        user.fb_user.last_friends_update = date.today()
+        user.fb_user.save()
+        friends = user.friends.all()
 
     form = PlanningForm(
         request.POST or None, instance=Planning(organizer=user.fb_user)
