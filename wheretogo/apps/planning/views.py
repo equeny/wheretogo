@@ -51,9 +51,10 @@ def friends_choose(request):
         for friend in friends:
             fr, created = FacebookProfile.objects.get_or_create(
                 fid=friend['id'],
-                name=friend['name'],
-                picture=friend['picture'],
             )
+            fr.name = friend['name']
+            fr.picture = friend['picture']
+            fr.save()
             user.friends.add(fr)
 
     form = PlanningForm(
