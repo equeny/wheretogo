@@ -129,9 +129,8 @@ class PlaceManager(models.Manager):
                 place_obj = Place(fid=place['id'])
             if place_obj.likes_count < 0:
                 # getting extended info about page from FB
-                path = 'https://graph.facebook.com/%s' % place['id']
-                logger.debug(
-                    u'Fetching place data for place %s' % place['id']
+                path = 'https://graph.facebook.com/%s?access_token=%s' % (
+                    place['id'], oauth_token
                 )
                 response = gurllib2.urlopen(path)
                 page_data = json.loads(response.read())
@@ -236,7 +235,9 @@ class Planning(models.Model):
                     u'Parsing check-in for place "%s"' % checkin['place']['name']
                 )
                 place_id = checkin['place']['id']
-                path = 'https://graph.facebook.com/%s' % place_id
+                path = 'https://graph.facebook.com/%s?access_token=%s' % (
+                    place_id, self.organizer.oauth_token
+                )
                 response = gurllib2.urlopen(path)
                 data = json.loads(response.read())
                 if not data:

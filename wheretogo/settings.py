@@ -132,14 +132,16 @@ INSTALLED_APPS = (
 
     # apps
     'social_auth',
-    'south',
+    #'south',
     'djcelery',
 
     # project
     'core',
     'planning',
-    'profiles'
+    'profiles',
+    'kombu.transport.django'
 )
+
 
 AUTHENTICATION_BACKENDS = (
     'social_auth.backends.facebook.FacebookBackend',
